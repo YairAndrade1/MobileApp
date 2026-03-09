@@ -4,6 +4,7 @@ struct RegisterView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
+    @State private var goToHome: Bool = false
 
     var body: some View {
         ZStack {
@@ -35,8 +36,14 @@ struct RegisterView: View {
                         AuthSecureField(label: "CONFIRMAR CONTRASEÑA", placeholder: "Repite tu contraseña", text: $confirmPassword)
                     }
 
+                    // Hidden NavigationLink to AlarmView
+                    NavigationLink(destination: AlarmView(), isActive: $goToHome) {
+                        EmptyView()
+                    }
+                    .hidden()
+
                     // Primary CTA
-                    PrimaryAuthButton(title: "Crear Cuenta") {}
+                    PrimaryAuthButton(title: "Crear Cuenta") { goToHome = true }
 
                     // Divider
                     AuthDivider(text: "o registrarse con")
@@ -77,3 +84,4 @@ struct RegisterView: View {
         RegisterView()
     }
 }
+
