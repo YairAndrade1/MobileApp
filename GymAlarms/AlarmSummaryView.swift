@@ -140,8 +140,8 @@ struct AlarmSummaryView: View {
             }
         }
         .sheet(isPresented: $showSaveSheet) {
-            SaveAlarmSheetView(name: $alarmName, isSaving: $isSaving, onSave: performSave)
-                .presentationDetents([.height(360)])
+            SaveAlarmSheet(name: $alarmName, isSaving: $isSaving, isPresented: $showSaveSheet, onSave: performSave)
+                .presentationDetents([.fraction(0.38)])
                 .presentationDragIndicator(.visible)
                 .background(SummaryPalette.background)
         }
@@ -223,67 +223,6 @@ private struct SummaryStatRow: View {
                         .stroke(SummaryPalette.border, lineWidth: 1)
                 )
         )
-    }
-}
-
-// MARK: - SaveAlarmSheetView (reusable facade)
-// This is a lightweight facade to reuse the existing flow. If you already have a SaveAlarmSheet, you can replace this with your project version.
-private struct SaveAlarmSheetView: View {
-    @Binding var name: String
-    @Binding var isSaving: Bool
-    var onSave: () -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Capsule()
-                .fill(SummaryPalette.white28)
-                .frame(width: 44, height: 4)
-                .opacity(0.6)
-                .frame(maxWidth: .infinity)
-                .padding(.top, 8)
-                .padding(.bottom, 8)
-
-            Text("Guardar Alarma")
-                .font(.system(.title3, design: .rounded, weight: .bold))
-                .foregroundStyle(SummaryPalette.white)
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text("NOMBRE DE LA ALARMA")
-                    .font(.system(.caption, design: .rounded, weight: .semibold))
-                    .foregroundStyle(SummaryPalette.white60)
-                TextField("Ingresa el nombre de tu alarma", text: $name)
-                    .textInputAutocapitalization(.words)
-                    .disableAutocorrection(true)
-                    .padding(12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(SummaryPalette.cardBackground)
-                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(SummaryPalette.border, lineWidth: 1))
-                    )
-                    .foregroundStyle(SummaryPalette.white)
-            }
-
-            Button(action: onSave) {
-                HStack {
-                    if isSaving {
-                        ProgressView().tint(Color.black)
-                    }
-                    Text("Guardar")
-                        .font(.system(.headline, design: .rounded, weight: .semibold))
-                        .foregroundStyle(Color.black)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(SummaryPalette.primaryGreen)
-                .clipShape(Capsule())
-            }
-            .disabled(isSaving || name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-            .buttonStyle(.plain)
-
-            Spacer()
-        }
-        .padding(20)
-        .background(SummaryPalette.background.ignoresSafeArea())
     }
 }
 

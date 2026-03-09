@@ -85,12 +85,10 @@ struct AlarmExecutionView: View {
 
             VStack(spacing: 0) {
                 // Header
-                ExecutionHeaderView(currentSet: currentSet, totalSets: totalSets) {
-                    dismiss()
-                }
-                .padding(.top, Layout.headerTopPadding)
-                .padding(.horizontal, Layout.horizontalPadding)
-                .padding(.bottom, Layout.headerBottomSpacing)
+                ExecutionHeaderView(currentSet: currentSet, totalSets: totalSets)
+                    .padding(.top, Layout.headerTopPadding)
+                    .padding(.horizontal, Layout.horizontalPadding)
+                    .padding(.bottom, Layout.headerBottomSpacing)
 
                 // Sets indicator
                 SetProgressIndicator(total: totalSets, current: currentSet)
@@ -229,22 +227,12 @@ struct AlarmExecutionView: View {
 private struct ExecutionHeaderView: View {
     let currentSet: Int
     let totalSets: Int
-    var onBack: () -> Void
 
     var body: some View {
         HStack(alignment: .center) {
-            Button(action: onBack) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(AlarmPalette.white75)
-                    .frame(width: 36, height: 36)
-                    .background(AlarmPalette.white7)
-                    .clipShape(Circle())
-            }
             Text("Alarma")
                 .font(.system(.subheadline, design: .rounded, weight: .semibold))
                 .foregroundStyle(AlarmPalette.white75)
-                .padding(.leading, 6)
 
             Spacer()
 
