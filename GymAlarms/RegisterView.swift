@@ -4,6 +4,8 @@ struct RegisterView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
+    @State private var goToApple: Bool = false
+    @State private var goToGoogle: Bool = false
 
     var body: some View {
         ZStack {
@@ -43,8 +45,8 @@ struct RegisterView: View {
 
                     // Social buttons
                     VStack(spacing: 12) {
-                        SocialAuthButton(provider: .apple, title: "Continuar con Apple") {}
-                        SocialAuthButton(provider: .google, title: "Continuar con Google") {}
+                        SocialAuthButton(provider: .apple, title: "Continuar con Apple") { goToApple = true }
+                        SocialAuthButton(provider: .google, title: "Continuar con Google") { goToGoogle = true }
                     }
 
                     // Bottom link to login
@@ -67,6 +69,12 @@ struct RegisterView: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 24)
             }
+        }
+        .navigationDestination(isPresented: $goToApple) {
+            AppleSignInIntroView()
+        }
+        .navigationDestination(isPresented: $goToGoogle) {
+            GoogleSignInAccountsView()
         }
         .navigationBarBackButtonHidden(true)
     }

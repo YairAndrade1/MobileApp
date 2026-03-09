@@ -3,6 +3,9 @@ import SwiftUI
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
+    @State private var goToForgot: Bool = false
+    @State private var goToGoogle: Bool = false
+    @State private var goToApple: Bool = false
 
     var body: some View {
         ZStack {
@@ -35,7 +38,9 @@ struct LoginView: View {
                         // Forgot password link
                         HStack {
                             Spacer()
-                            Button(action: {}) {
+                            NavigationLink {
+                                ForgotPasswordView()
+                            } label: {
                                 Text("¿Olvidaste tu contraseña?")
                                     .font(.system(.footnote, design: .rounded, weight: .semibold))
                                     .foregroundStyle(Color.blue)
@@ -61,8 +66,8 @@ struct LoginView: View {
 
                     // Social buttons
                     VStack(spacing: 12) {
-                        SocialAuthButton(provider: .apple, title: "Continuar con Apple") {}
-                        SocialAuthButton(provider: .google, title: "Continuar con Google") {}
+                        SocialAuthButton(provider: .apple, title: "Continuar con Apple") { goToApple = true }
+                        SocialAuthButton(provider: .google, title: "Continuar con Google") { goToGoogle = true }
                     }
 
                     // Bottom link to register
@@ -85,6 +90,12 @@ struct LoginView: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 24)
             }
+        }
+        .navigationDestination(isPresented: $goToGoogle) {
+            GoogleSignInAccountsView()
+        }
+        .navigationDestination(isPresented: $goToApple) {
+            AppleSignInIntroView()
         }
         .navigationBarBackButtonHidden(true)
     }
