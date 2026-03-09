@@ -10,6 +10,20 @@ struct WelcomeView: View {
     private let secondaryWhite = Color.white.opacity(0.7)
     private let secondaryGray = AuthPalette.textSecondary
 
+    // Layout metrics (use Dynamic Type scaling where it makes sense)
+    @ScaledMetric(relativeTo: .largeTitle) private var imageMaxWidth: CGFloat = 360
+    @ScaledMetric private var verticalButtonPadding: CGFloat = 16
+
+    private enum Layout {
+        static let topSpacerMin: CGFloat = 24
+        static let stackSpacing: CGFloat = 24
+        static let titleSpacing: CGFloat = 8
+        static let horizontalPadding: CGFloat = 24
+        static let subtitleHorizontalPadding: CGFloat = 32
+        static let bottomPadding: CGFloat = 24
+        static let secondaryButtonStrokeWidth: CGFloat = 1
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -18,19 +32,19 @@ struct WelcomeView: View {
                     .ignoresSafeArea()
 
                 // Content
-                VStack(spacing: 24) {
-                    Spacer(minLength: 24)
+                VStack(spacing: Layout.stackSpacing) {
+                    Spacer(minLength: Layout.topSpacerMin)
 
                     // Top image centered upper-middle
                     Image("welcomeClockGlow")
                         .resizable()
                         .scaledToFit()
-                        .frame(maxWidth: 360)
+                        .frame(maxWidth: imageMaxWidth)
                         .accessibilityHidden(true)
-                        .padding(.top, 24)
+                        .padding(.top, Layout.topSpacerMin)
 
                     // Main text block
-                    VStack(spacing: 8) {
+                    VStack(spacing: Layout.titleSpacing) {
                         // Title lines using system display style
                         Text("¿Listo para entrenar")
                             .font(.system(.largeTitle, design: .rounded))
@@ -42,26 +56,26 @@ struct WelcomeView: View {
                             .multilineTextAlignment(.center)
                             .foregroundStyle(primaryGreen)
                     }
-                    .padding(.horizontal, 24)
+                    .padding(.horizontal, Layout.horizontalPadding)
 
                     // Subtitle
                     Text("Tu temporizador de entrenamiento inteligente")
                         .font(.system(.subheadline, design: .rounded))
                         .foregroundStyle(secondaryGray)
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal, 32)
+                        .padding(.horizontal, Layout.subtitleHorizontalPadding)
 
                     Spacer()
 
                     // Buttons block
-                    VStack(spacing: 12) {
+                    VStack(spacing: Layout.titleSpacing) {
                         // Primary button as NavigationLink
                         NavigationLink(destination: RegisterView()) {
                             Text("Crear Cuenta")
                                 .font(.system(.headline, design: .rounded, weight: .semibold))
                                 .foregroundStyle(Color.black)
                                 .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
+                                .padding(.vertical, verticalButtonPadding)
                                 .background(primaryGreen)
                                 .clipShape(Capsule())
                         }
@@ -73,17 +87,17 @@ struct WelcomeView: View {
                                 .font(.system(.headline, design: .rounded, weight: .regular))
                                 .foregroundStyle(white)
                                 .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
+                                .padding(.vertical, verticalButtonPadding)
                                 .background(
                                     Capsule()
-                                        .stroke(white.opacity(0.2), lineWidth: 1)
+                                        .stroke(white.opacity(0.2), lineWidth: Layout.secondaryButtonStrokeWidth)
                                         .background(backgroundSecondary.opacity(0))
                                 )
                         }
                         .buttonStyle(.plain)
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 24)
+                    .padding(.horizontal, Layout.horizontalPadding)
+                    .padding(.bottom, Layout.bottomPadding)
                 }
             }
         }
