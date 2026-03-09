@@ -4,6 +4,8 @@
 import SwiftUI
 
 struct AppleLoadingView: View {
+    @State private var goToAlarm: Bool = false
+
     var body: some View {
         ZStack {
             AuthPalette.backgroundPrimary.ignoresSafeArea()
@@ -46,6 +48,14 @@ struct AppleLoadingView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+                goToAlarm = true
+            }
+        }
+        .navigationDestination(isPresented: $goToAlarm) {
+            AlarmView()
+        }
     }
 }
 

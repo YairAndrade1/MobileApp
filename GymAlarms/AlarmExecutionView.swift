@@ -90,18 +90,18 @@ struct AlarmExecutionView: View {
                     .padding(.horizontal, Layout.horizontalPadding)
                     .padding(.bottom, Layout.headerBottomSpacing)
 
+                // Title by phase
+                Text(phase == .work ? "Tiempo de Trabajo" : "Tiempo de Descanso")
+                    .font(.system(.largeTitle, design: .default, weight: .bold))
+                    .foregroundStyle(phase == .work ? AlarmPalette.primaryGreen : AlarmPalette.restBlue)
+                    .padding(.bottom, 10)
+
                 // Sets indicator
                 SetProgressIndicator(total: totalSets, current: currentSet)
                     .padding(.horizontal, Layout.horizontalPadding)
                     .padding(.bottom, 8)
 
                 Spacer(minLength: 12)
-
-                // Title by phase
-                Text(phase == .work ? "Tiempo de Trabajo" : "Tiempo de Descanso")
-                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
-                    .foregroundStyle(phase == .work ? AlarmPalette.primaryGreen : AlarmPalette.restBlue)
-                    .padding(.bottom, 12)
 
                 // Progress Ring
                 ProgressRingView(
@@ -128,9 +128,10 @@ struct AlarmExecutionView: View {
                 ExecutionControlsView(
                     isPaused: isPaused,
                     primaryColor: phase == .work ? AlarmPalette.primaryGreen : AlarmPalette.restBlue,
-                    onBack15: { adjustTime(by: -15) },
+                    onBack15: { remaining = min(totalPhaseDuration, remaining + 15) },
                     onTogglePlayPause: togglePause,
-                    onForward15OrNext: { adjustTime(by: 15) }
+                    onForward15OrNext: { adjustTime(by: 15) },
+                    onSkipPhase: { advancePhase() }
                 )
                 .padding(.top, 12)
                 .padding(.horizontal, Layout.horizontalPadding)
@@ -273,7 +274,7 @@ private struct SetProgressIndicator: View {
         HStack(spacing: Metrics.spacing) {
             ForEach(1...total, id: \.self) { index in
                 Capsule()
-                    .fill(index == current ? AlarmPalette.white28 : AlarmPalette.white10)
+                    .fill(index == current ? AlarmPalette.white : AlarmPalette.white10)
                     .frame(width: index == current ? Metrics.widthActive : Metrics.widthInactive,
                            height: index == current ? Metrics.heightActive : Metrics.heightInactive)
             }
@@ -330,6 +331,7 @@ private struct ExecutionControlsView: View {
     let onBack15: () -> Void
     let onTogglePlayPause: () -> Void
     let onForward15OrNext: () -> Void
+    let onSkipPhase: () -> Void
 
     private enum Metrics {
         static let buttonSize: CGFloat = 68
@@ -346,10 +348,13 @@ private struct ExecutionControlsView: View {
 
                 CircleButton(style: .secondary, size: Metrics.buttonSize, iconSize: Metrics.iconSize, iconName: "goforward.15", color: primaryColor, action: onForward15OrNext)
             }
-            Text("Saltar fase")
-                .font(.system(.footnote, design: .rounded))
-                .foregroundStyle(AlarmPalette.white45)
-                .padding(.top, 2)
+            Button(action: onSkipPhase) {
+                Text("Saltar fase")
+                    .font(.system(.footnote, design: .default))
+                    .foregroundStyle(primaryColor.opacity(0.6))
+                    .padding(.top, 2)
+            }
+            .buttonStyle(.plain)
         }
     }
 }

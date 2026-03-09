@@ -27,8 +27,9 @@ struct GooglePermissionsView: View {
                 }
                 .frame(width: 60, height: 60)
 
-                // Row with google icon + email
+                // Row with google icon + email (centered)
                 HStack(spacing: 8) {
+                    Spacer()
                     ZStack {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                             .fill(Color(hex: "#4285F4"))
@@ -101,11 +102,11 @@ struct GooglePermissionsView: View {
                             .foregroundStyle(Color.white.opacity(0.55))
                             .frame(maxWidth: .infinity)
                             .frame(height: 48)
-                            .background(
+                            .overlay(
                                 Capsule()
-                                    .stroke(Color.white.opacity(0.09), lineWidth: 1.1)
-                                    .background(Color.white.opacity(0.05))
+                                    .stroke(Color.white.opacity(0.15), lineWidth: 1.1)
                             )
+                            .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
                 }

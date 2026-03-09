@@ -23,10 +23,10 @@ struct LoginView: View {
                     // Title & Subtitle
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Iniciar Sesión")
-                            .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                            .font(.system(.largeTitle, design: .default, weight: .bold))
                             .foregroundStyle(AuthPalette.white)
                         Text("¡Bienvenido de vuelta! 👋")
-                            .font(.system(.subheadline, design: .rounded))
+                            .font(.system(.subheadline, design: .default))
                             .foregroundStyle(AuthPalette.textSecondary)
                     }
 
@@ -42,7 +42,7 @@ struct LoginView: View {
                                 ForgotPasswordView()
                             } label: {
                                 Text("¿Olvidaste tu contraseña?")
-                                    .font(.system(.footnote, design: .rounded, weight: .semibold))
+                                        .font(.system(.footnote, design: .default, weight: .semibold))
                                     .foregroundStyle(Color.blue)
                             }
                             .buttonStyle(.plain)
@@ -55,7 +55,7 @@ struct LoginView: View {
                     // Secondary action demo
                     Button(action: { goToHome = true }) {
                         Text("→ Continuar como invitado (demo)")
-                            .font(.system(.footnote, design: .rounded))
+                            .font(.system(.footnote, design: .default))
                             .foregroundStyle(AuthPalette.textSecondary)
                             .frame(maxWidth: .infinity)
                     }
@@ -83,7 +83,7 @@ struct LoginView: View {
                         }
                         .buttonStyle(.plain)
                     }
-                    .font(.system(.footnote, design: .rounded))
+                    .font(.system(.footnote, design: .default))
                     .frame(maxWidth: .infinity)
                     .multilineTextAlignment(.center)
                 }

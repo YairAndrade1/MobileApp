@@ -5,6 +5,7 @@ import SwiftUI
 
 struct GoogleLoadingView: View {
     let email: String
+    @State private var goToAlarm: Bool = false
 
     var body: some View {
         ZStack {
@@ -46,6 +47,14 @@ struct GoogleLoadingView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                goToAlarm = true
+            }
+        }
+        .navigationDestination(isPresented: $goToAlarm) {
+            AlarmView()
+        }
     }
 }
 

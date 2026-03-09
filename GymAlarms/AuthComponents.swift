@@ -57,7 +57,7 @@ struct PrimaryAuthButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.system(.headline, design: .rounded, weight: .semibold))
+                .font(.system(.headline, design: .default, weight: .semibold))
                 .foregroundStyle(Color.black)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
@@ -91,7 +91,7 @@ struct SocialAuthButton: View {
                     .frame(width: 18, height: 18)
                     .opacity(1.0)
                 Text(title)
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .font(.system(.subheadline, design: .default, weight: .semibold))
                     .foregroundStyle(AuthPalette.white)
             }
             .frame(maxWidth: .infinity)
@@ -113,7 +113,7 @@ struct AuthDivider: View {
         HStack(alignment: .center, spacing: 12) {
             Rectangle().fill(AuthPalette.fieldBorder).frame(height: 1)
             Text(text)
-                .font(.system(.footnote, design: .rounded))
+                .font(.system(.footnote, design: .default))
                 .foregroundStyle(AuthPalette.textSecondary)
             Rectangle().fill(AuthPalette.fieldBorder).frame(height: 1)
         }
@@ -129,13 +129,13 @@ struct AuthTextField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
-                .font(.system(.caption, design: .rounded, weight: .semibold))
+                .font(.system(.caption, design: .default, weight: .semibold))
                 .foregroundStyle(AuthPalette.textSecondary)
-            TextField(placeholder, text: $text)
+            TextField("", text: $text, prompt: Text(placeholder).foregroundColor(AuthPalette.textSecondary.opacity(0.5)))
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
                 .keyboardType(.emailAddress)
-                .font(.system(.body, design: .rounded))
+                .font(.system(.body, design: .default))
                 .padding(.vertical, 14)
                 .padding(.horizontal, 14)
                 .background(
@@ -160,20 +160,20 @@ struct AuthSecureField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
-                .font(.system(.caption, design: .rounded, weight: .semibold))
+                .font(.system(.caption, design: .default, weight: .semibold))
                 .foregroundStyle(AuthPalette.textSecondary)
 
             HStack(spacing: 8) {
                 Group {
                     if isSecure {
-                        SecureField(placeholder, text: $text)
+                        SecureField("", text: $text, prompt: Text(placeholder).foregroundColor(AuthPalette.textSecondary.opacity(0.5)))
                     } else {
-                        TextField(placeholder, text: $text)
+                        TextField("", text: $text, prompt: Text(placeholder).foregroundColor(AuthPalette.textSecondary.opacity(0.5)))
                     }
                 }
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
-                .font(.system(.body, design: .rounded))
+                .font(.system(.body, design: .default))
                 .foregroundStyle(AuthPalette.white)
 
                 Button(action: { isSecure.toggle() }) {

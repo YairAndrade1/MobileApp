@@ -72,7 +72,7 @@ struct SummaryCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("RESUMEN")
-                .font(.system(.caption, design: .rounded, weight: .semibold))
+                .font(.system(.caption, design: .default, weight: .semibold))
                 .foregroundStyle(AuthPalette.textSecondary)
 
             HStack(spacing: 12) {
@@ -82,10 +82,10 @@ struct SummaryCard: View {
                 SummaryItem(title: "TOTAL", value: total)
             }
             .padding(14)
-            .background(AuthPalette.backgroundSecondary)
+            .background(Color.white.opacity(0.04))
             .overlay(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(AuthPalette.fieldBorder, lineWidth: 1)
+                    .stroke(Color.white.opacity(0.07), lineWidth: 1)
             )
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
@@ -130,7 +130,7 @@ struct BottomNavBar: View {
             .padding(.horizontal, 12)
             .padding(.top, 8)
             .padding(.bottom, 10)
-            .background(AuthPalette.backgroundSecondary.ignoresSafeArea(edges: .bottom))
+            .background(AuthPalette.backgroundPrimary.ignoresSafeArea(edges: .bottom))
         }
     }
 }
@@ -173,84 +173,67 @@ struct SaveAlarmSheet: View {
     var onSave: () -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
-            Spacer()
-            VStack(spacing: 0) {
-                // Sheet container with scrollable content to avoid overflow
-                VStack(spacing: 16) {
-                    // Handle
-                    Capsule()
-                        .fill(AuthPalette.fieldBorder)
-                        .frame(width: 40, height: 4)
-                        .padding(.top, 8)
-                    HStack(alignment: .center) {
-                        Text("Guardar Alarma")
-                            .font(.system(.headline, design: .rounded, weight: .semibold))
-                            .foregroundStyle(AuthPalette.white)
-                        Spacer()
-                        Button(action: onClose) {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 12, weight: .bold))
-                                .foregroundStyle(AuthPalette.white)
-                                .frame(width: 28, height: 28)
-                                .background(AuthPalette.backgroundPrimary.opacity(0.6))
-                                .clipShape(Circle())
-                                .overlay(Circle().stroke(AuthPalette.fieldBorder, lineWidth: 1))
-                        }
-                        .buttonStyle(.plain)
-                    }
-                    .padding(.horizontal, 12)
-
-                    ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("NOMBRE DE LA ALARMA")
-                                .font(.system(size: 12, weight: .semibold, design: .default))
-                                .foregroundStyle(AuthPalette.textSecondary)
-                            TextField("Ingresa el nombre de tu alarma", text: $name)
-                                .textInputAutocapitalization(.words)
-                                .font(.system(.body, design: .rounded))
-                                .padding(.vertical, 14)
-                                .padding(.horizontal, 14)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .stroke(AuthPalette.fieldBorder, lineWidth: 1)
-                                        .background(AuthPalette.backgroundSecondary)
-                                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                                )
-                                .foregroundStyle(AuthPalette.white)
-                        }
-                        .padding(.horizontal, 12)
-                        .padding(.top, 4)
-                    }
-
-                    Button(action: onSave) {
-                        HStack(spacing: 8) {
-                            if isSaving { ProgressView().tint(.black) }
-                            Text(isSaving ? "Guardando..." : "Guardar")
-                                .font(.system(size: 17, weight: .semibold, design: .default))
-                        }
-                        .foregroundStyle(Color.black)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(AuthPalette.primaryGreen)
-                        .clipShape(Capsule())
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.horizontal, 12)
-                    .padding(.bottom, 12)
+        VStack(spacing: 16) {
+            // Handle
+            Capsule()
+                .fill(AuthPalette.fieldBorder)
+                .frame(width: 40, height: 4)
+                .padding(.top, 8)
+            HStack(alignment: .center) {
+                Text("Guardar Alarma")
+                    .font(.system(.headline, design: .default, weight: .semibold))
+                    .foregroundStyle(AuthPalette.white)
+                Spacer()
+                Button(action: onClose) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(AuthPalette.white)
+                        .frame(width: 28, height: 28)
+                        .background(AuthPalette.backgroundPrimary.opacity(0.6))
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(AuthPalette.fieldBorder, lineWidth: 1))
                 }
-                .padding(.vertical, 8)
-                .frame(maxHeight: UIScreen.main.bounds.height * 0.6)
-                .background(AuthPalette.backgroundSecondary)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .stroke(AuthPalette.fieldBorder, lineWidth: 1)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-                .shadow(color: .black.opacity(0.4), radius: 20, y: -4)
-                .transition(.move(edge: .bottom))
+                .buttonStyle(.plain)
             }
+            .padding(.horizontal, 16)
+
+            VStack(alignment: .leading, spacing: 10) {
+                Text("NOMBRE DE LA ALARMA")
+                    .font(.system(size: 12, weight: .semibold, design: .default))
+                    .foregroundStyle(AuthPalette.textSecondary)
+                TextField("Ingresa el nombre de tu alarma", text: $name)
+                    .textInputAutocapitalization(.words)
+                    .font(.system(.body, design: .default))
+                    .padding(.vertical, 14)
+                    .padding(.horizontal, 14)
+                    .background(
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .stroke(AuthPalette.fieldBorder, lineWidth: 1)
+                            .background(AuthPalette.backgroundSecondary)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    )
+                    .foregroundStyle(AuthPalette.white)
+            }
+            .padding(.horizontal, 16)
+
+            Button(action: onSave) {
+                HStack(spacing: 8) {
+                    if isSaving { ProgressView().tint(.black) }
+                    Text(isSaving ? "Guardando..." : "Guardar")
+                        .font(.system(size: 17, weight: .semibold, design: .default))
+                }
+                .foregroundStyle(Color.black)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(AuthPalette.primaryGreen)
+                .clipShape(Capsule())
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 12)
         }
+        .padding(.top, 4)
+        .background(AuthPalette.backgroundSecondary)
         .ignoresSafeArea(edges: .bottom)
     }
 }

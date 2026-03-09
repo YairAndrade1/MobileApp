@@ -6,7 +6,6 @@ import SwiftUI
 struct AppleSignInIntroView: View {
     private let bg = AuthPalette.backgroundPrimary
 
-    @Environment(\.dismiss) private var dismiss
     @State private var goToScanning: Bool = false
 
     var body: some View {
@@ -14,26 +13,6 @@ struct AppleSignInIntroView: View {
             bg.ignoresSafeArea()
 
             VStack(spacing: 20) {
-                // Top bar back
-                HStack(spacing: 4) {
-                    Button(action: { dismiss() }) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(Color.blue)
-                            Text("Atrás")
-                                .font(.system(size: 17, weight: .medium))
-                                .foregroundStyle(Color.blue)
-                        }
-                    }
-                    .buttonStyle(.plain)
-                    Spacer()
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 12)
-
-                Spacer(minLength: 0)
-
                 // Apple logo + titles
                 VStack(spacing: 6) {
                     Image(systemName: "applelogo")

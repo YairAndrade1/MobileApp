@@ -47,12 +47,12 @@ struct WelcomeView: View {
                     VStack(spacing: Layout.titleSpacing) {
                         // Title lines using system display style
                         Text("¿Listo para entrenar")
-                            .font(.system(.largeTitle, design: .rounded))
+                            .font(.system(.largeTitle, design: .default))
                             .multilineTextAlignment(.center)
                             .foregroundStyle(white)
 
                         Text("sin perder tu flow?")
-                            .font(.system(.largeTitle, design: .rounded))
+                            .font(.system(.largeTitle, design: .default))
                             .multilineTextAlignment(.center)
                             .foregroundStyle(primaryGreen)
                     }
@@ -60,7 +60,7 @@ struct WelcomeView: View {
 
                     // Subtitle
                     Text("Tu temporizador de entrenamiento inteligente")
-                        .font(.system(.subheadline, design: .rounded))
+                        .font(.system(.subheadline, design: .default))
                         .foregroundStyle(secondaryGray)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, Layout.subtitleHorizontalPadding)
@@ -72,7 +72,7 @@ struct WelcomeView: View {
                         // Primary button as NavigationLink
                         NavigationLink(destination: RegisterView()) {
                             Text("Crear Cuenta")
-                                .font(.system(.headline, design: .rounded, weight: .semibold))
+                                .font(.system(.headline, design: .default, weight: .semibold))
                                 .foregroundStyle(Color.black)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, verticalButtonPadding)
@@ -84,7 +84,7 @@ struct WelcomeView: View {
                         // Secondary button as NavigationLink
                         NavigationLink(destination: LoginView()) {
                             Text("Ya Tengo Cuenta")
-                                .font(.system(.headline, design: .rounded, weight: .regular))
+                                .font(.system(.headline, design: .default, weight: .regular))
                                 .foregroundStyle(white)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, verticalButtonPadding)

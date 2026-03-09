@@ -68,17 +68,11 @@ struct ForgotPasswordView: View {
                             }
                             .padding(.horizontal, 24)
 
-                            // Icon circle (mail)
+                            // Icon (mail)
                             HStack {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 32, style: .continuous)
-                                        .stroke(Color.blue.opacity(0.25), lineWidth: 1.1)
-                                        .background(Color.blue.opacity(0.10))
-                                    Image(systemName: "envelope")
-                                        .font(.system(size: 28, weight: .regular))
-                                        .foregroundStyle(Color.blue)
-                                }
-                                .frame(width: 64, height: 64)
+                                Image(systemName: "envelope")
+                                    .font(.system(size: 32, weight: .regular))
+                                    .foregroundStyle(Color.blue)
                                 Spacer()
                             }
                             .padding(.horizontal, 24)
@@ -86,11 +80,11 @@ struct ForgotPasswordView: View {
                             // Title + subtitle
                             VStack(alignment: .leading, spacing: 8) {
                                 Text("¿Olvidaste tu contraseña?")
-                                    .font(.system(size: 30, weight: .heavy, design: .rounded))
+                                    .font(.system(size: 30, weight: .heavy, design: .default))
                                     .foregroundStyle(white)
                                     .kerning(-1)
                                 Text("Sin problema. Escribe tu correo y te enviaremos un enlace para restablecerla.")
-                                    .font(.system(.subheadline, design: .rounded))
+                                    .font(.system(.subheadline, design: .default))
                                     .foregroundStyle(secondaryGray)
                                     .kerning(-0.2)
                             }
@@ -99,7 +93,7 @@ struct ForgotPasswordView: View {
                             // Email field
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Correo electrónico".uppercased())
-                                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                                    .font(.system(size: 12, weight: .medium, design: .default))
                                     .foregroundStyle(secondaryGray)
                                     .kerning(0.3)
 
@@ -125,7 +119,7 @@ struct ForgotPasswordView: View {
                                     .frame(width: 36, height: 36)
 
                                     // TextField
-                                    TextField("example@gmail.com", text: $email)
+                                    TextField("", text: $email, prompt: Text("example@gmail.com").foregroundColor(AuthPalette.textSecondary.opacity(0.5)))
                                         .textInputAutocapitalization(.never)
                                         .keyboardType(.emailAddress)
                                         .textContentType(.emailAddress)
@@ -145,6 +139,16 @@ struct ForgotPasswordView: View {
                             }
                             .padding(.horizontal, 24)
 
+                            // Invalid email message
+                            if inputState == .invalid {
+                                Text("Correo electrónico inválido")
+                                    .font(.system(size: 12, weight: .medium, design: .default))
+                                    .foregroundStyle(dangerRed)
+                                    .padding(.horizontal, 24)
+                            }
+
+                            Spacer(minLength: 0)
+
                             // Expiration info banner
                             HStack(spacing: 8) {
                                 ZStack {
@@ -157,7 +161,7 @@ struct ForgotPasswordView: View {
                                 .frame(width: 28, height: 28)
 
                                 Text("El enlace expira en 15 minutos por seguridad")
-                                    .font(.system(size: 12, weight: .regular, design: .rounded))
+                                    .font(.system(size: 12, weight: .regular, design: .default))
                                     .foregroundStyle(secondaryGray)
                                     .kerning(-0.1)
 
@@ -165,14 +169,12 @@ struct ForgotPasswordView: View {
                             }
                             .padding(.horizontal, 24)
 
-                            Spacer(minLength: 0)
-
                             // Primary button
                             Button(action: {
                                 navigateToInbox = true
                             }) {
                                 Text("Enviar enlace")
-                                    .font(.system(.headline, design: .rounded, weight: .bold))
+                                    .font(.system(.headline, design: .default, weight: .bold))
                                     .foregroundStyle(Color.black)
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 54)
@@ -186,7 +188,7 @@ struct ForgotPasswordView: View {
                             // Secondary button (text style)
                             Button(action: { dismiss() }) {
                                 Text("Volver al inicio de sesión")
-                                    .font(.system(.subheadline, design: .rounded))
+                                    .font(.system(.subheadline, design: .default))
                                     .foregroundStyle(Color.blue)
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 38)

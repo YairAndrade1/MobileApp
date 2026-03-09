@@ -57,7 +57,7 @@ struct AlarmSummaryView: View {
         static let horizontalPadding: CGFloat = 20
         static let dividerHeight: CGFloat = 1
         static let bottomButtonsSpacing: CGFloat = 12
-        static let emojiSize: CGFloat = 64
+        static let emojiSize: CGFloat = 160
     }
 
     var body: some View {
@@ -65,26 +65,19 @@ struct AlarmSummaryView: View {
             SummaryPalette.background.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Emoji top
+                // Emoji hero — takes up roughly half the screen
                 Text("😎")
                     .font(.system(size: Layout.emojiSize))
-                    .padding(.top, 24)
-                    .padding(.bottom, 16)
-
-                // Divider subtle
-                Rectangle()
-                    .fill(SummaryPalette.white12)
-                    .frame(height: Layout.dividerHeight)
-                    .opacity(0.6)
-                    .padding(.horizontal, Layout.horizontalPadding)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 48)
+                    .padding(.bottom, 32)
 
                 // Header + bookmark
                 SummaryHeader(title: "¡Bien Hecho!", subtitle: subtitleText, onBookmark: {
                     showSaveSheet = true
                 })
                 .padding(.horizontal, Layout.horizontalPadding)
-                .padding(.top, 16)
-                .padding(.bottom, 8)
+                .padding(.bottom, 16)
 
                 // Stats
                 VStack(spacing: 10) {
@@ -100,13 +93,9 @@ struct AlarmSummaryView: View {
 
                 // Bottom buttons
                 VStack(spacing: Layout.bottomButtonsSpacing) {
-                    // Continuar -> AlarmView
-                    NavigationLink(destination: AlarmView(), isActive: $goToAlarmView) { EmptyView() }
-                        .hidden()
-
                     Button(action: { goToAlarmView = true }) {
                         Text("Continuar")
-                            .font(.system(.headline, design: .rounded, weight: .semibold))
+                            .font(.system(.headline, design: .default, weight: .semibold))
                             .foregroundStyle(Color.black)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
@@ -115,13 +104,9 @@ struct AlarmSummaryView: View {
                     }
                     .buttonStyle(.plain)
 
-                    // Repetir Entrenamiento -> AlarmExecutionView
-                    NavigationLink(destination: AlarmExecutionView(), isActive: $goToExecution) { EmptyView() }
-                        .hidden()
-
                     Button(action: { goToExecution = true }) {
                         Text("Repetir Entrenamiento")
-                            .font(.system(.headline, design: .rounded))
+                            .font(.system(.headline, design: .default))
                             .foregroundStyle(SummaryPalette.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
@@ -138,6 +123,12 @@ struct AlarmSummaryView: View {
                 .padding(.horizontal, Layout.horizontalPadding)
                 .padding(.bottom, 24)
             }
+        }
+        .navigationDestination(isPresented: $goToAlarmView) {
+            AlarmView()
+        }
+        .navigationDestination(isPresented: $goToExecution) {
+            AlarmExecutionView()
         }
         .sheet(isPresented: $showSaveSheet) {
             SaveAlarmSheet(name: $alarmName, isSaving: isSaving, onClose: { showSaveSheet = false }, onSave: performSave)

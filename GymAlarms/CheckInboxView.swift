@@ -52,20 +52,20 @@ struct CheckInboxView: View {
                             }
                             .padding(.horizontal, 24)
 
-                            // Big green circular mail icon
+                            // Centered checkmark icon
                             HStack {
+                                Spacer()
                                 ZStack {
-                                    RoundedRectangle(cornerRadius: 40, style: .continuous)
-                                        .stroke(primaryGreen.opacity(0.3), lineWidth: 1.1)
-                                        .background {
-                                            primaryGreen.opacity(0.1)
-                                                .clipShape(RoundedRectangle(cornerRadius: 40, style: .continuous))
-                                        }
-                                    Image(systemName: "envelope.badge")
-                                        .font(.system(size: 34, weight: .regular))
+                                    Circle()
+                                        .fill(primaryGreen.opacity(0.15))
+                                        .frame(width: 80, height: 80)
+                                    Circle()
+                                        .stroke(primaryGreen.opacity(0.4), lineWidth: 1.5)
+                                        .frame(width: 80, height: 80)
+                                    Image(systemName: "checkmark")
+                                        .font(.system(size: 34, weight: .bold))
                                         .foregroundStyle(primaryGreen)
                                 }
-                                .frame(width: 80, height: 80)
                                 Spacer()
                             }
                             .padding(.horizontal, 24)
@@ -80,7 +80,7 @@ struct CheckInboxView: View {
                             // Subtitle and email chip
                             VStack(alignment: .leading, spacing: 12) {
                                 Text("Enviamos un enlace de recuperación a:")
-                                    .font(.system(.subheadline, design: .rounded))
+                                    .font(.system(.subheadline, design: .default))
                                     .foregroundStyle(secondaryGray)
                                     .kerning(-0.2)
 
@@ -99,7 +99,7 @@ struct CheckInboxView: View {
                                     .frame(width: 28, height: 28)
 
                                     Text(email)
-                                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                                        .font(.system(size: 14, weight: .medium, design: .default))
                                         .foregroundStyle(primaryGreen)
                                         .kerning(-0.2)
 
@@ -138,45 +138,45 @@ struct CheckInboxView: View {
                             .padding(.horizontal, 24)
 
                             Spacer(minLength: 0)
-
-                            // Primary button
-                            Button(action: { goToLogin = true }) {
-                                Text("Volver al inicio de sesión")
-                                    .font(.system(.headline, design: .rounded, weight: .bold))
-                                    .foregroundStyle(Color.black)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 54)
-                                    .background(primaryGreen)
-                                    .clipShape(Capsule())
-                            }
-                            .buttonStyle(.plain)
-                            .padding(.horizontal, 24)
-
-                            // Resend disabled with countdown
-                            Button(action: { /* trigger resend */ }) {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "arrow.clockwise")
-                                        .font(.system(size: 14, weight: .regular))
-                                        .foregroundStyle(secondaryGray)
-                                    Text(canResend ? "Reenviar" : "Reenviar en \(secondsRemaining)s")
-                                        .font(.system(.subheadline, design: .rounded))
-                                        .foregroundStyle(secondaryGray)
-                                }
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 46)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 23, style: .continuous)
-                                        .stroke(Color.white.opacity(0.18), lineWidth: 1.1)
-                                )
-                                .opacity(canResend ? 1.0 : 0.5)
-                            }
-                            .disabled(!canResend)
-                            .buttonStyle(.plain)
-                            .padding(.horizontal, 24)
-                            .padding(.bottom, 16)
                         }
                         .padding(.top, 8)
                     }
+
+                    // Bottom buttons pinned
+                    VStack(spacing: 12) {
+                        Button(action: { goToLogin = true }) {
+                            Text("Volver al inicio de sesión")
+                                .font(.system(.headline, design: .default, weight: .bold))
+                                .foregroundStyle(Color.black)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 54)
+                                .background(primaryGreen)
+                                .clipShape(Capsule())
+                        }
+                        .buttonStyle(.plain)
+
+                        Button(action: { /* trigger resend */ }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "arrow.clockwise")
+                                    .font(.system(size: 14, weight: .regular))
+                                    .foregroundStyle(secondaryGray)
+                                Text(canResend ? "Reenviar" : "Reenviar en \(secondsRemaining)s")
+                                    .font(.system(.subheadline, design: .default))
+                                    .foregroundStyle(secondaryGray)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 46)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 23, style: .continuous)
+                                    .stroke(Color.white.opacity(0.18), lineWidth: 1.1)
+                            )
+                            .opacity(canResend ? 1.0 : 0.5)
+                        }
+                        .disabled(!canResend)
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 24)
                 }
             }
             .navigationBarHidden(true)
@@ -211,13 +211,13 @@ struct CheckInboxView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     }
                 Text("\(number)")
-                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                    .font(.system(size: 11, weight: .bold, design: .default))
                     .foregroundStyle(primaryGreen)
             }
             .frame(width: 24, height: 24)
 
             Text(text)
-                .font(.system(size: 14, weight: .regular, design: .rounded))
+                .font(.system(size: 14, weight: .regular, design: .default))
                 .foregroundStyle(Color(red: 0.83, green: 0.83, blue: 0.81))
                 .kerning(-0.2)
             Spacer()

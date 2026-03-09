@@ -19,6 +19,7 @@ struct AlarmView: View {
 
     var body: some View {
         ZStack {
+
             AuthPalette.backgroundPrimary.ignoresSafeArea()
 
             VStack(spacing: 0) {
@@ -29,10 +30,10 @@ struct AlarmView: View {
                         HStack(alignment: .center) {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Alarma")
-                                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                                    .font(.system(.largeTitle, design: .default, weight: .bold))
                                     .foregroundStyle(AuthPalette.white)
                                 Text("Configura tu entrenamiento")
-                                    .font(.system(.subheadline, design: .rounded))
+                                    .font(.system(.subheadline, design: .default))
                                     .foregroundStyle(AuthPalette.textSecondary)
                             }
                             Spacer()
@@ -91,7 +92,7 @@ struct AlarmView: View {
                                 Image(systemName: "play.fill")
                                     .font(.system(size: 14, weight: .bold))
                                 Text("Iniciar")
-                                    .font(.system(.headline, design: .rounded, weight: .semibold))
+                                    .font(.system(.headline, design: .default, weight: .semibold))
                             }
                             .foregroundStyle(Color.black)
                             .frame(maxWidth: .infinity)
@@ -110,38 +111,6 @@ struct AlarmView: View {
                 BottomNavBar(active: .alarm)
             }
 
-            // Save sheet overlay
-            if showSaveSheet {
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                    .transition(.opacity)
-                    .onTapGesture {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.9)) {
-                            showSaveSheet = false
-                        }
-                    }
-
-                SaveAlarmSheet(
-                    name: $alarmName,
-                    isSaving: isSaving,
-                    onClose: {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.9)) {
-                            showSaveSheet = false
-                        }
-                    },
-                    onSave: {
-                        guard !isSaving else { return }
-                        isSaving = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            isSaving = false
-                            showSuccess = true
-                        }
-                    }
-                )
-                .transition(.move(edge: .bottom))
-                .zIndex(2)
-            }
-
             // Success modal
             if showSuccess {
                 SaveSuccessModal(
@@ -157,6 +126,25 @@ struct AlarmView: View {
                 )
                 .zIndex(3)
             }
+        }
+        .navigationBarBackButtonHidden(true)
+        .sheet(isPresented: $showSaveSheet) {
+            SaveAlarmSheet(
+                name: $alarmName,
+                isSaving: isSaving,
+                onClose: { showSaveSheet = false },
+                onSave: {
+                    guard !isSaving else { return }
+                    isSaving = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        isSaving = false
+                        showSuccess = true
+                    }
+                }
+            )
+            .presentationDetents([.fraction(0.38)])
+            .presentationDragIndicator(.visible)
+            .background(AuthPalette.backgroundSecondary)
         }
     }
 

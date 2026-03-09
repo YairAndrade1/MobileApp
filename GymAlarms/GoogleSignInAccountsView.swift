@@ -149,18 +149,20 @@ struct GoogleSignInAccountsView: View {
                             }
                             .padding(.horizontal, 24)
 
-                            // Footer links (dummy)
-                            HStack(spacing: 16) {
-                                Text("Español (España)")
-                                Text("Privacidad")
-                                Text("Condiciones")
-                            }
-                            .font(.system(size: 11))
-                            .foregroundStyle(AuthPalette.textSecondary)
-                            .padding(.top, 32)
                         }
                         .frame(maxWidth: .infinity)
                     }
+
+                    // Footer pinned at bottom
+                    HStack(spacing: 16) {
+                        Text("Español (España)")
+                        Text("Privacidad")
+                        Text("Condiciones")
+                    }
+                    .font(.system(size: 11))
+                    .foregroundStyle(AuthPalette.textSecondary)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity)
                 }
             }
             .navigationDestination(isPresented: $goToPermissions) {

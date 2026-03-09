@@ -24,10 +24,10 @@ struct RegisterView: View {
                     // Title & subtitle
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Crear Cuenta")
-                            .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                            .font(.system(.largeTitle, design: .default, weight: .bold))
                             .foregroundStyle(AuthPalette.white)
                         Text("Completa para continuar")
-                            .font(.system(.subheadline, design: .rounded))
+                            .font(.system(.subheadline, design: .default))
                             .foregroundStyle(AuthPalette.textSecondary)
                     }
 
@@ -63,7 +63,7 @@ struct RegisterView: View {
                         }
                         .buttonStyle(.plain)
                     }
-                    .font(.system(.footnote, design: .rounded))
+                    .font(.system(.footnote, design: .default))
                     .frame(maxWidth: .infinity)
                     .multilineTextAlignment(.center)
                 }
