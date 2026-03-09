@@ -19,7 +19,7 @@ struct GoogleLoadingView: View {
                             RoundedRectangle(cornerRadius: 36, style: .continuous)
                                 .stroke(Color(hex: "#4285F4").opacity(0.15), lineWidth: 1.1)
                         )
-                    Image("googleLogo")
+                    Image("googlelogo")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 32, height: 32)

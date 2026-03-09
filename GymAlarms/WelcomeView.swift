@@ -105,7 +105,5 @@ struct WelcomeView: View {
 }
 
 #Preview("WelcomeView") {
-    NavigationStack {
-        WelcomeView()
-    }
+    WelcomeView()
 }

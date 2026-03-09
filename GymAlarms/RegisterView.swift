@@ -38,12 +38,6 @@ struct RegisterView: View {
                         AuthSecureField(label: "CONFIRMAR CONTRASEÑA", placeholder: "Repite tu contraseña", text: $confirmPassword)
                     }
 
-                    // Hidden NavigationLink to AlarmView
-                    NavigationLink(destination: AlarmView(), isActive: $goToHome) {
-                        EmptyView()
-                    }
-                    .hidden()
-
                     // Primary CTA
                     PrimaryAuthButton(title: "Crear Cuenta") { goToHome = true }
 
@@ -76,6 +70,9 @@ struct RegisterView: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 24)
             }
+        }
+        .navigationDestination(isPresented: $goToHome) {
+            AlarmView()
         }
         .navigationDestination(isPresented: $goToApple) {
             AppleSignInIntroView()

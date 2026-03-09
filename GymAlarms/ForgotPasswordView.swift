@@ -33,11 +33,10 @@ struct ForgotPasswordView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .top) {
-                backgroundPrimary.ignoresSafeArea()
+        ZStack(alignment: .top) {
+            backgroundPrimary.ignoresSafeArea()
 
-                VStack(spacing: 0) {
+            VStack(spacing: 0) {
                     // Top bar with back button
                     HStack {
                         Button(action: { goToLogin = true }) {
@@ -207,7 +206,6 @@ struct ForgotPasswordView: View {
                 LoginView()
             }
             .navigationBarHidden(true)
-        }
     }
 
     private func borderColor(for state: InputState) -> Color {

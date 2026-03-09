@@ -77,8 +77,8 @@ struct SocialAuthButton: View {
 
     private var logoName: String {
         switch provider {
-        case .apple: return "appleLogo"
-        case .google: return "googleLogo"
+        case .apple: return "applelogo"
+        case .google: return "googlelogo"
         }
     }
 

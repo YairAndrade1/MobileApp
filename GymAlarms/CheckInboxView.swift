@@ -14,13 +14,13 @@ struct CheckInboxView: View {
     @State private var secondsRemaining: Int = 59
     @State private var canResend: Bool = false
     @State private var goToLogin: Bool = false
+    @State private var countdownTimer: Timer? = nil
 
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .top) {
-                backgroundPrimary.ignoresSafeArea()
+        ZStack(alignment: .top) {
+            backgroundPrimary.ignoresSafeArea()
 
-                VStack(spacing: 0) {
+            VStack(spacing: 0) {
                     // Top bar with back button
                     HStack {
                         Button(action: { goToLogin = true }) {
@@ -183,14 +183,14 @@ struct CheckInboxView: View {
             .navigationDestination(isPresented: $goToLogin) {
                 LoginView()
             }
-        }
-        .onAppear(perform: startCountdown)
+            .onAppear(perform: startCountdown)
+            .onDisappear { countdownTimer?.invalidate() }
     }
 
     private func startCountdown() {
         canResend = false
         secondsRemaining = 59
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
             if secondsRemaining > 0 {
                 secondsRemaining -= 1
             } else {

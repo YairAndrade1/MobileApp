@@ -3,7 +3,6 @@ import SwiftUI
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var goToForgot: Bool = false
     @State private var goToGoogle: Bool = false
     @State private var goToApple: Bool = false
     @State private var goToHome: Bool = false
@@ -50,12 +49,6 @@ struct LoginView: View {
                         }
                     }
 
-                    // Hidden NavigationLink to AlarmView
-                    NavigationLink(destination: AlarmView(), isActive: $goToHome) {
-                        EmptyView()
-                    }
-                    .hidden()
-
                     // Primary CTA
                     PrimaryAuthButton(title: "Iniciar Sesión") { goToHome = true }
 
@@ -97,6 +90,9 @@ struct LoginView: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 24)
             }
+        }
+        .navigationDestination(isPresented: $goToHome) {
+            AlarmView()
         }
         .navigationDestination(isPresented: $goToGoogle) {
             GoogleSignInAccountsView()

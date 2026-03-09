@@ -8,6 +8,7 @@ struct GoogleSignInAccountsView: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var goToPermissions: Bool = false
+    @State private var selectedEmail: String = ""
 
     // Demo accounts
     private let accounts: [(initials: String, name: String, email: String, color: Color)] = [
@@ -16,11 +17,10 @@ struct GoogleSignInAccountsView: View {
     ]
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                bg.ignoresSafeArea()
+        ZStack {
+            bg.ignoresSafeArea()
 
-                VStack(spacing: 0) {
+            VStack(spacing: 0) {
                     // Top bar: Atrás
                     HStack(spacing: 4) {
                         Button(action: { dismiss() }) {
@@ -65,7 +65,7 @@ struct GoogleSignInAccountsView: View {
                             .padding(.top, 8)
 
                             // Google logo
-                            Image("googleLogo")
+                            Image("googlelogo")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 40, height: 40)
@@ -86,7 +86,7 @@ struct GoogleSignInAccountsView: View {
                             // Account cards
                             VStack(spacing: 12) {
                                 ForEach(accounts, id: \.email) { account in
-                                    Button(action: { goToPermissions = true }) {
+                                    Button(action: { selectedEmail = account.email; goToPermissions = true }) {
                                         HStack(spacing: 12) {
                                             ZStack {
                                                 Circle()
@@ -164,10 +164,9 @@ struct GoogleSignInAccountsView: View {
                 }
             }
             .navigationDestination(isPresented: $goToPermissions) {
-                GooglePermissionsView(email: "miguelangelvergaracastro@gmail.com")
+                GooglePermissionsView(email: selectedEmail)
             }
             .navigationBarHidden(true)
-        }
     }
 }
 
