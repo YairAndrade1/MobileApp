@@ -5,7 +5,7 @@ import SwiftUI
 
 struct GooglePermissionsView: View {
     let email: String
-    private let bg = AuthPalette.backgroundPrimary
+    private let bg = AppPalette.backgroundPrimary
 
     @Environment(\.dismiss) private var dismiss
     @State private var goToLoading: Bool = false
@@ -20,7 +20,7 @@ struct GooglePermissionsView: View {
                 // Green badge top
                 ZStack {
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(AuthPalette.primaryGreen)
+                        .fill(AppPalette.primaryGreen)
                     Image(systemName: "checkmark.seal")
                         .foregroundStyle(bg)
                         .font(.system(size: 26, weight: .bold))
@@ -40,7 +40,7 @@ struct GooglePermissionsView: View {
                     .frame(width: 28, height: 28)
                     Text(email)
                         .font(.system(size: 13))
-                        .foregroundStyle(AuthPalette.textSecondary)
+                        .foregroundStyle(AppPalette.textSecondary)
                     Spacer()
                 }
                 .frame(height: 28)
@@ -50,11 +50,11 @@ struct GooglePermissionsView: View {
                 VStack(spacing: 0) {
                     Text("IntervalApp quiere acceder")
                         .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(AuthPalette.white)
+                        .foregroundStyle(AppPalette.white)
                         .kerning(-0.5)
                     Text("a tu Cuenta de Google")
                         .font(.system(size: 14))
-                        .foregroundStyle(AuthPalette.textSecondary)
+                        .foregroundStyle(AppPalette.textSecondary)
                 }
 
                 // Permissions card
@@ -79,7 +79,7 @@ struct GooglePermissionsView: View {
                 // Disclaimer
                 Text("Al continuar, permites que IntervalApp acceda a la información anterior asociada a tu cuenta de Google.")
                     .font(.system(size: 12))
-                    .foregroundStyle(AuthPalette.textSecondary)
+                    .foregroundStyle(AppPalette.textSecondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 24)
 
@@ -137,10 +137,10 @@ struct GooglePermissionsView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(AuthPalette.white)
+                    .foregroundStyle(AppPalette.white)
                 Text(subtitle)
                     .font(.system(size: 12))
-                    .foregroundStyle(AuthPalette.textSecondary)
+                    .foregroundStyle(AppPalette.textSecondary)
             }
             Spacer()
             Image(systemName: "chevron.right")

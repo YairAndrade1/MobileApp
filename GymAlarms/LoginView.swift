@@ -9,13 +9,13 @@ struct LoginView: View {
 
     var body: some View {
         ZStack {
-            AuthPalette.backgroundPrimary.ignoresSafeArea()
+            AppPalette.backgroundPrimary.ignoresSafeArea()
 
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 24) {
                     // Top bar with back button
                     HStack {
-                        AuthBackButton()
+                        AppBackButton()
                         Spacer()
                     }
                     .padding(.top, 8)
@@ -24,16 +24,16 @@ struct LoginView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Iniciar Sesión")
                             .font(.system(.largeTitle, design: .default, weight: .bold))
-                            .foregroundStyle(AuthPalette.white)
+                            .foregroundStyle(AppPalette.white)
                         Text("¡Bienvenido de vuelta! 👋")
                             .font(.system(.subheadline, design: .default))
-                            .foregroundStyle(AuthPalette.textSecondary)
+                            .foregroundStyle(AppPalette.textSecondary)
                     }
 
                     // Form
                     VStack(spacing: 16) {
-                        AuthTextField(label: "CORREO ELECTRÓNICO", placeholder: "example@gmail.com", text: $email)
-                        AuthSecureField(label: "CONTRASEÑA", placeholder: "••••••••", text: $password)
+                        LabeledTextField(label: "CORREO ELECTRÓNICO", placeholder: "example@gmail.com", text: $email)
+                        LabeledSecureField(label: "CONTRASEÑA", placeholder: "••••••••", text: $password)
 
                         // Forgot password link
                         HStack {
@@ -50,35 +50,35 @@ struct LoginView: View {
                     }
 
                     // Primary CTA
-                    PrimaryAuthButton(title: "Iniciar Sesión") { goToHome = true }
+                    PrimaryButton(title: "Iniciar Sesión") { goToHome = true }
 
                     // Secondary action demo
                     Button(action: { goToHome = true }) {
                         Text("→ Continuar como invitado (demo)")
                             .font(.system(.footnote, design: .default))
-                            .foregroundStyle(AuthPalette.textSecondary)
+                            .foregroundStyle(AppPalette.textSecondary)
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.plain)
 
                     // Divider
-                    AuthDivider(text: "o continuar con")
+                    DividerLabel(text: "o continuar con")
 
                     // Social buttons
                     VStack(spacing: 12) {
-                        SocialAuthButton(provider: .apple, title: "Continuar con Apple") { goToApple = true }
-                        SocialAuthButton(provider: .google, title: "Continuar con Google") { goToGoogle = true }
+                        SocialButton(provider: .apple, title: "Continuar con Apple") { goToApple = true }
+                        SocialButton(provider: .google, title: "Continuar con Google") { goToGoogle = true }
                     }
 
                     // Bottom link to register
                     HStack(spacing: 4) {
                         Text("¿No tienes cuenta?")
-                            .foregroundStyle(AuthPalette.textSecondary)
+                            .foregroundStyle(AppPalette.textSecondary)
                         NavigationLink {
                             RegisterView()
                         } label: {
                             Text("Regístrate")
-                                .foregroundStyle(AuthPalette.primaryGreen)
+                                .foregroundStyle(AppPalette.primaryGreen)
                                 .fontWeight(.semibold)
                         }
                         .buttonStyle(.plain)

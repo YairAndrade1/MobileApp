@@ -8,7 +8,7 @@ struct AppleLoadingView: View {
 
     var body: some View {
         ZStack {
-            AuthPalette.backgroundPrimary.ignoresSafeArea()
+            AppPalette.backgroundPrimary.ignoresSafeArea()
 
             VStack(spacing: 24) {
                 ZStack {
@@ -34,7 +34,7 @@ struct AppleLoadingView: View {
                     }
                     Text("Verificando con Apple ID")
                         .font(.system(size: 14))
-                        .foregroundStyle(AuthPalette.textSecondary)
+                        .foregroundStyle(AppPalette.textSecondary)
                 }
 
                 // Loading ring mimic

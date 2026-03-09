@@ -3,36 +3,6 @@
 
 import SwiftUI
 
-// MARK: - Local Palette (aligned with AlarmExecutionView)
-private enum SummaryPalette {
-    static let background = Color(hex: "071416")
-    static let cardBackground = Color(hex: "0D2226")
-    static let border = Color(hex: "FFFFFF", alpha: 0.12)
-    static let white = Color(hex: "FFFFFF")
-    static let white75 = Color(hex: "FFFFFF", alpha: 0.75)
-    static let white60 = Color(hex: "FFFFFF", alpha: 0.60)
-    static let white45 = Color(hex: "FFFFFF", alpha: 0.45)
-    static let white28 = Color(hex: "FFFFFF", alpha: 0.28)
-    static let white12 = Color(hex: "FFFFFF", alpha: 0.12)
-    static let primaryGreen = Color(hex: "BDFF00")
-}
-
-// Local hex helper if not globally available
-private extension Color {
-    init(hex: String, alpha: Double = 1.0) {
-        var hexSanitized = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hexSanitized).scanHexInt64(&int)
-        let r, g, b: UInt64
-        switch hexSanitized.count {
-        case 3: (r, g, b) = ((int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: (r, g, b) = (int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        default: (r, g, b) = (1, 1, 0)
-        }
-        self.init(.sRGB, red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255, opacity: alpha)
-    }
-}
-
 // MARK: - AlarmSummaryView
 struct AlarmSummaryView: View {
     // Inputs
@@ -46,7 +16,7 @@ struct AlarmSummaryView: View {
     @State private var goToAlarmView = false
     @State private var goToExecution = false
 
-    // Save alarm sheet/modal state (reusing existing flow by interface)
+    // Save alarm sheet/modal state
     @State private var showSaveSheet = false
     @State private var showSaveSuccess = false
     @State private var alarmName: String = ""
@@ -55,31 +25,27 @@ struct AlarmSummaryView: View {
     // Layout metrics
     private enum Layout {
         static let horizontalPadding: CGFloat = 20
-        static let dividerHeight: CGFloat = 1
         static let bottomButtonsSpacing: CGFloat = 12
         static let emojiSize: CGFloat = 160
     }
 
     var body: some View {
         ZStack {
-            SummaryPalette.background.ignoresSafeArea()
+            AppPalette.backgroundPrimary.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Emoji hero — takes up roughly half the screen
                 Text("😎")
                     .font(.system(size: Layout.emojiSize))
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.top, 48)
                     .padding(.bottom, 32)
 
-                // Header + bookmark
-                SummaryHeader(title: "¡Bien Hecho!", subtitle: subtitleText, onBookmark: {
+                SummaryHeader(title: "¡Bien Hecho!", subtitle: subtitleText, imageName: "tabSaved") {
                     showSaveSheet = true
-                })
+                }
                 .padding(.horizontal, Layout.horizontalPadding)
                 .padding(.bottom, 16)
 
-                // Stats
                 VStack(spacing: 10) {
                     SummaryStatRow(title: "Tiempo Total", value: totalTime, highlightValue: true)
                     SummaryStatRow(title: "Tiempo de Trabajo", value: workTime)
@@ -91,7 +57,6 @@ struct AlarmSummaryView: View {
 
                 Spacer()
 
-                // Bottom buttons
                 VStack(spacing: Layout.bottomButtonsSpacing) {
                     Button(action: { goToAlarmView = true }) {
                         Text("Continuar")
@@ -99,7 +64,7 @@ struct AlarmSummaryView: View {
                             .foregroundStyle(Color.black)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
-                            .background(SummaryPalette.primaryGreen)
+                            .background(AppPalette.primaryGreen)
                             .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
@@ -107,14 +72,14 @@ struct AlarmSummaryView: View {
                     Button(action: { goToExecution = true }) {
                         Text("Repetir Entrenamiento")
                             .font(.system(.headline, design: .default))
-                            .foregroundStyle(SummaryPalette.white)
+                            .foregroundStyle(AppPalette.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
                             .background(
                                 Capsule()
-                                    .fill(SummaryPalette.cardBackground)
+                                    .fill(AppPalette.backgroundSecondary)
                                     .overlay(
-                                        Capsule().stroke(SummaryPalette.border, lineWidth: 1)
+                                        Capsule().stroke(AppPalette.fieldBorder, lineWidth: 1)
                                     )
                             )
                     }
@@ -131,17 +96,28 @@ struct AlarmSummaryView: View {
             AlarmExecutionView()
         }
         .sheet(isPresented: $showSaveSheet) {
-            SaveAlarmSheet(name: $alarmName, isSaving: isSaving, onClose: { showSaveSheet = false }, onSave: performSave)
-                .presentationDetents([.fraction(0.38)])
-                .presentationDragIndicator(.visible)
-                .background(SummaryPalette.background)
+            SaveAlarmSheet(
+                name: $alarmName,
+                isSaving: isSaving,
+                onClose: { showSaveSheet = false },
+                onSave: performSave
+            )
+            .presentationDetents([.fraction(0.38)])
+            .presentationDragIndicator(.visible)
+            .background(AppPalette.backgroundSecondary)
         }
         .overlay(alignment: .center) {
             if showSaveSuccess {
-                SaveSuccessModalView(title: "¡Alarma Guardada!", subtitle: "\(alarmName.isEmpty ? "Alarma" : alarmName) ha sido guardada en tu lista", buttonTitle: "Perfecto") {
-                    showSaveSuccess = false
-                    showSaveSheet = false
-                }
+                SaveSuccessModal(
+                    title: "¡Alarma Guardada!",
+                    message: "\(alarmName.isEmpty ? "Alarma" : alarmName) ha sido guardada en tu lista",
+                    onConfirm: {
+                        showSaveSuccess = false
+                        showSaveSheet = false
+                        alarmName = ""
+                    }
+                )
+                .zIndex(3)
             }
         }
     }
@@ -161,6 +137,7 @@ struct AlarmSummaryView: View {
 private struct SummaryHeader: View {
     let title: String
     let subtitle: String
+    var imageName: String? = nil
     var onBookmark: () -> Void
 
     var body: some View {
@@ -168,20 +145,27 @@ private struct SummaryHeader: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(.largeTitle, design: .rounded, weight: .bold))
-                    .foregroundStyle(SummaryPalette.white)
+                    .foregroundStyle(AppPalette.white)
                 Text(subtitle)
                     .font(.system(.subheadline, design: .rounded))
-                    .foregroundStyle(SummaryPalette.white60)
+                    .foregroundStyle(AppPalette.textSecondary)
             }
             Spacer()
             Button(action: onBookmark) {
-                Image(systemName: "bookmark")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(SummaryPalette.white75)
-                    .frame(width: 40, height: 40)
-                    .background(SummaryPalette.cardBackground)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(SummaryPalette.border, lineWidth: 1))
+                Group {
+                    if let imageName, UIImage(named: imageName) != nil {
+                        Image(imageName)
+                            .renderingMode(.template)
+                    } else {
+                        Image(systemName: "bookmark")
+                    }
+                }
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(AppPalette.white.opacity(0.75))
+                .frame(width: 40, height: 40)
+                .background(AppPalette.backgroundSecondary)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(AppPalette.fieldBorder, lineWidth: 1))
             }
             .buttonStyle(.plain)
         }
@@ -198,63 +182,22 @@ private struct SummaryStatRow: View {
         HStack {
             Text(title)
                 .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(SummaryPalette.white60)
+                .foregroundStyle(AppPalette.textSecondary)
             Spacer()
             Text(value)
                 .font(.system(.headline, design: .rounded, weight: .semibold))
-                .foregroundStyle(highlightValue ? SummaryPalette.primaryGreen : SummaryPalette.white)
+                .foregroundStyle(highlightValue ? AppPalette.primaryGreen : AppPalette.white)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(SummaryPalette.cardBackground)
+                .fill(AppPalette.backgroundSecondary)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(SummaryPalette.border, lineWidth: 1)
+                        .stroke(AppPalette.fieldBorder, lineWidth: 1)
                 )
         )
-    }
-}
-
-// MARK: - SaveSuccessModalView (reusable facade)
-private struct SaveSuccessModalView: View {
-    let title: String
-    let subtitle: String
-    let buttonTitle: String
-    var onDismiss: () -> Void
-
-    var body: some View {
-        ZStack {
-            SummaryPalette.background.opacity(0.6).ignoresSafeArea()
-            VStack(spacing: 12) {
-                Text(title)
-                    .font(.system(.title2, design: .rounded, weight: .bold))
-                    .foregroundStyle(SummaryPalette.white)
-                Text(subtitle)
-                    .font(.system(.subheadline, design: .rounded))
-                    .foregroundStyle(SummaryPalette.white60)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 16)
-                Button(action: onDismiss) {
-                    Text(buttonTitle)
-                        .font(.system(.headline, design: .rounded, weight: .semibold))
-                        .foregroundStyle(Color.black)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background(SummaryPalette.primaryGreen)
-                        .clipShape(Capsule())
-                }
-                .buttonStyle(.plain)
-            }
-            .padding(20)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(SummaryPalette.cardBackground)
-                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(SummaryPalette.border, lineWidth: 1))
-            )
-            .padding(32)
-        }
     }
 }
 
@@ -268,7 +211,5 @@ private struct SaveSuccessModalView: View {
             setCount: 3,
             subtitleText: "3 series completadas"
         )
-        .toolbar(.hidden)
     }
 }
-

@@ -10,13 +10,13 @@ struct RegisterView: View {
 
     var body: some View {
         ZStack {
-            AuthPalette.backgroundPrimary.ignoresSafeArea()
+            AppPalette.backgroundPrimary.ignoresSafeArea()
 
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 24) {
                     // Top bar with back
                     HStack {
-                        AuthBackButton()
+                        AppBackButton()
                         Spacer()
                     }
                     .padding(.top, 8)
@@ -25,40 +25,40 @@ struct RegisterView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Crear Cuenta")
                             .font(.system(.largeTitle, design: .default, weight: .bold))
-                            .foregroundStyle(AuthPalette.white)
+                            .foregroundStyle(AppPalette.white)
                         Text("Completa para continuar")
                             .font(.system(.subheadline, design: .default))
-                            .foregroundStyle(AuthPalette.textSecondary)
+                            .foregroundStyle(AppPalette.textSecondary)
                     }
 
                     // Form
                     VStack(spacing: 16) {
-                        AuthTextField(label: "CORREO ELECTRÓNICO", placeholder: "tu@correo.com", text: $email)
-                        AuthSecureField(label: "CONTRASEÑA", placeholder: "Mínimo 8 caracteres", text: $password)
-                        AuthSecureField(label: "CONFIRMAR CONTRASEÑA", placeholder: "Repite tu contraseña", text: $confirmPassword)
+                        LabeledTextField(label: "CORREO ELECTRÓNICO", placeholder: "tu@correo.com", text: $email)
+                        LabeledSecureField(label: "CONTRASEÑA", placeholder: "Mínimo 8 caracteres", text: $password)
+                        LabeledSecureField(label: "CONFIRMAR CONTRASEÑA", placeholder: "Repite tu contraseña", text: $confirmPassword)
                     }
 
                     // Primary CTA
-                    PrimaryAuthButton(title: "Crear Cuenta") { goToHome = true }
+                    PrimaryButton(title: "Crear Cuenta") { goToHome = true }
 
                     // Divider
-                    AuthDivider(text: "o registrarse con")
+                    DividerLabel(text: "o registrarse con")
 
                     // Social buttons
                     VStack(spacing: 12) {
-                        SocialAuthButton(provider: .apple, title: "Continuar con Apple") { goToApple = true }
-                        SocialAuthButton(provider: .google, title: "Continuar con Google") { goToGoogle = true }
+                        SocialButton(provider: .apple, title: "Continuar con Apple") { goToApple = true }
+                        SocialButton(provider: .google, title: "Continuar con Google") { goToGoogle = true }
                     }
 
                     // Bottom link to login
                     HStack(spacing: 4) {
                         Text("¿Ya tienes cuenta?")
-                            .foregroundStyle(AuthPalette.textSecondary)
+                            .foregroundStyle(AppPalette.textSecondary)
                         NavigationLink {
                             LoginView()
                         } label: {
                             Text("Iniciar Sesión")
-                                .foregroundStyle(AuthPalette.primaryGreen)
+                                .foregroundStyle(AppPalette.primaryGreen)
                                 .fontWeight(.semibold)
                         }
                         .buttonStyle(.plain)
@@ -89,4 +89,3 @@ struct RegisterView: View {
         RegisterView()
     }
 }
-

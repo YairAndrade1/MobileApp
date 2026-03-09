@@ -8,7 +8,7 @@ struct AppleFaceIDScanningView: View {
 
     var body: some View {
         ZStack {
-            AuthPalette.backgroundPrimary.ignoresSafeArea()
+            AppPalette.backgroundPrimary.ignoresSafeArea()
 
             VStack(spacing: 16) {
                 Spacer()
@@ -16,32 +16,32 @@ struct AppleFaceIDScanningView: View {
                 // Green square badge
                 ZStack {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .fill(AuthPalette.primaryGreen)
+                        .fill(AppPalette.primaryGreen)
                     Image(systemName: "camera.viewfinder")
                         .font(.system(size: 26, weight: .bold))
-                        .foregroundStyle(AuthPalette.backgroundPrimary)
+                        .foregroundStyle(AppPalette.backgroundPrimary)
                 }
                 .frame(width: 48, height: 48)
 
                 // FaceID square frame
                 ZStack {
                     RoundedRectangle(cornerRadius: 40, style: .continuous)
-                        .stroke(AuthPalette.primaryGreen, lineWidth: 3)
+                        .stroke(AppPalette.primaryGreen, lineWidth: 3)
                         .frame(width: 80, height: 80)
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(AuthPalette.primaryGreen)
+                        .fill(AppPalette.primaryGreen)
                         .frame(width: 6, height: 6)
                         .offset(x: -28, y: -28)
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(AuthPalette.primaryGreen)
+                        .fill(AppPalette.primaryGreen)
                         .frame(width: 6, height: 6)
                         .offset(x: 28, y: -28)
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(AuthPalette.primaryGreen)
+                        .fill(AppPalette.primaryGreen)
                         .frame(width: 6, height: 6)
                         .offset(x: 28, y: 28)
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(AuthPalette.primaryGreen)
+                        .fill(AppPalette.primaryGreen)
                         .frame(width: 6, height: 6)
                         .offset(x: -28, y: 28)
                 }
@@ -53,14 +53,13 @@ struct AppleFaceIDScanningView: View {
                         .foregroundStyle(.white)
                     Text("Mantén el dispositivo frente a tu cara")
                         .font(.system(size: 13))
-                        .foregroundStyle(AuthPalette.textSecondary)
+                        .foregroundStyle(AppPalette.textSecondary)
                 }
 
                 Spacer()
             }
         }
         .onAppear {
-            // Simula avance hacia loading después de un instante
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                 goToLoading = true
             }

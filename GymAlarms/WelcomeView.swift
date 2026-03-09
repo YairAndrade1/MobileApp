@@ -3,14 +3,14 @@ import SwiftUI
 // MARK: - WelcomeView
 struct WelcomeView: View {
     // Color palette
-    private let backgroundPrimary = AuthPalette.backgroundPrimary
-    private let backgroundSecondary = AuthPalette.backgroundSecondary
-    private let primaryGreen = AuthPalette.primaryGreen
-    private let white = AuthPalette.white
+    private let backgroundPrimary = AppPalette.backgroundPrimary
+    private let backgroundSecondary = AppPalette.backgroundSecondary
+    private let primaryGreen = AppPalette.primaryGreen
+    private let white = AppPalette.white
     private let secondaryWhite = Color.white.opacity(0.7)
-    private let secondaryGray = AuthPalette.textSecondary
+    private let secondaryGray = AppPalette.textSecondary
 
-    // Layout metrics (use Dynamic Type scaling where it makes sense)
+    // Layout metrics
     @ScaledMetric(relativeTo: .largeTitle) private var imageMaxWidth: CGFloat = 360
     @ScaledMetric private var verticalButtonPadding: CGFloat = 16
 
@@ -27,15 +27,11 @@ struct WelcomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
-                backgroundPrimary
-                    .ignoresSafeArea()
+                backgroundPrimary.ignoresSafeArea()
 
-                // Content
                 VStack(spacing: Layout.stackSpacing) {
                     Spacer(minLength: Layout.topSpacerMin)
 
-                    // Top image centered upper-middle
                     Image("welcomeClockGlow")
                         .resizable()
                         .scaledToFit()
@@ -43,9 +39,7 @@ struct WelcomeView: View {
                         .accessibilityHidden(true)
                         .padding(.top, Layout.topSpacerMin)
 
-                    // Main text block
                     VStack(spacing: Layout.titleSpacing) {
-                        // Title lines using system display style
                         Text("¿Listo para entrenar")
                             .font(.system(.largeTitle, design: .default))
                             .multilineTextAlignment(.center)
@@ -58,7 +52,6 @@ struct WelcomeView: View {
                     }
                     .padding(.horizontal, Layout.horizontalPadding)
 
-                    // Subtitle
                     Text("Tu temporizador de entrenamiento inteligente")
                         .font(.system(.subheadline, design: .default))
                         .foregroundStyle(secondaryGray)
@@ -67,9 +60,7 @@ struct WelcomeView: View {
 
                     Spacer()
 
-                    // Buttons block
                     VStack(spacing: Layout.titleSpacing) {
-                        // Primary button as NavigationLink
                         NavigationLink(destination: RegisterView()) {
                             Text("Crear Cuenta")
                                 .font(.system(.headline, design: .default, weight: .semibold))
@@ -81,7 +72,6 @@ struct WelcomeView: View {
                         }
                         .buttonStyle(.plain)
 
-                        // Secondary button as NavigationLink
                         NavigationLink(destination: LoginView()) {
                             Text("Ya Tengo Cuenta")
                                 .font(.system(.headline, design: .default, weight: .regular))

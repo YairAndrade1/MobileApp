@@ -12,7 +12,7 @@ struct AdjustableMetricCard: View {
             HStack {
                 Text(title)
                     .font(.system(size: 12, weight: .semibold, design: .default))
-                    .foregroundStyle(AuthPalette.textSecondary)
+                    .foregroundStyle(AppPalette.textSecondary)
                 Spacer()
             }
 
@@ -21,7 +21,7 @@ struct AdjustableMetricCard: View {
                 Spacer()
                 Text(valueText)
                     .font(.system(size: 34, weight: .bold, design: .default))
-                    .foregroundStyle(AuthPalette.white)
+                    .foregroundStyle(AppPalette.white)
                 Spacer()
                 CircleButton(symbol: "plus", action: onIncrement)
             }
@@ -44,17 +44,17 @@ private struct CircleButton: View {
         Button(action: action) {
             Image(systemName: symbol)
                 .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(symbol == "plus" ? AuthPalette.primaryGreen : AuthPalette.white)
+                .foregroundStyle(symbol == "plus" ? AppPalette.primaryGreen : AppPalette.white)
                 .frame(width: 40, height: 40)
                 .background(
-                    (symbol == "plus" ? AuthPalette.primaryGreen.opacity(0.12) : AuthPalette.white.opacity(0.08))
+                    (symbol == "plus" ? AppPalette.primaryGreen.opacity(0.12) : AppPalette.white.opacity(0.08))
                 )
                 .clipShape(Circle())
                 .overlay(
                     Circle()
-                        .stroke(AuthPalette.fieldBorder, lineWidth: 1)
+                        .stroke(AppPalette.fieldBorder, lineWidth: 1)
                         .background(
-                            Circle().fill(symbol == "plus" ? AuthPalette.primaryGreen.opacity(0.12) : AuthPalette.white.opacity(0.08))
+                            Circle().fill(symbol == "plus" ? AppPalette.primaryGreen.opacity(0.12) : AppPalette.white.opacity(0.08))
                         )
                 )
         }
@@ -73,7 +73,7 @@ struct SummaryCard: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("RESUMEN")
                 .font(.system(.caption, design: .default, weight: .semibold))
-                .foregroundStyle(AuthPalette.textSecondary)
+                .foregroundStyle(AppPalette.textSecondary)
 
             HStack(spacing: 12) {
                 SummaryItem(title: "SETS", value: "\(sets)")
@@ -100,11 +100,11 @@ private struct SummaryItem: View {
         VStack(spacing: 6) {
             Text(value)
                 .font(.system(size: 17, weight: .bold, design: .default))
-                .foregroundStyle(AuthPalette.primaryGreen)
+                .foregroundStyle(AppPalette.primaryGreen)
                 .minimumScaleFactor(0.7)
             Text(title)
                 .font(.system(size: 11, weight: .semibold, design: .default))
-                .foregroundStyle(AuthPalette.textSecondary)
+                .foregroundStyle(AppPalette.textSecondary)
         }
         .frame(maxWidth: .infinity)
     }
@@ -118,7 +118,7 @@ struct BottomNavBar: View {
     var body: some View {
         VStack(spacing: 0) {
             Rectangle()
-                .fill(AuthPalette.fieldBorder)
+                .fill(AppPalette.fieldBorder)
                 .frame(height: 1)
                 .opacity(1)
             HStack(spacing: 0) {
@@ -130,7 +130,7 @@ struct BottomNavBar: View {
             .padding(.horizontal, 12)
             .padding(.top, 8)
             .padding(.bottom, 10)
-            .background(AuthPalette.backgroundPrimary.ignoresSafeArea(edges: .bottom))
+            .background(AppPalette.backgroundPrimary.ignoresSafeArea(edges: .bottom))
         }
     }
 }
@@ -155,10 +155,10 @@ struct BottomNavItem: View {
                 }
             }
             .frame(width: 22, height: 22)
-            .foregroundStyle(isActive ? AuthPalette.primaryGreen : AuthPalette.textSecondary)
+            .foregroundStyle(isActive ? AppPalette.primaryGreen : AppPalette.textSecondary)
             Text(title)
                 .font(.system(size: 11, weight: .semibold, design: .default))
-                .foregroundStyle(isActive ? AuthPalette.primaryGreen : AuthPalette.textSecondary)
+                .foregroundStyle(isActive ? AppPalette.primaryGreen : AppPalette.textSecondary)
         }
         .frame(maxWidth: .infinity)
         .contentShape(Rectangle())
@@ -176,22 +176,22 @@ struct SaveAlarmSheet: View {
         VStack(spacing: 16) {
             // Handle
             Capsule()
-                .fill(AuthPalette.fieldBorder)
+                .fill(AppPalette.fieldBorder)
                 .frame(width: 40, height: 4)
                 .padding(.top, 8)
             HStack(alignment: .center) {
                 Text("Guardar Alarma")
                     .font(.system(.headline, design: .default, weight: .semibold))
-                    .foregroundStyle(AuthPalette.white)
+                    .foregroundStyle(AppPalette.white)
                 Spacer()
                 Button(action: onClose) {
                     Image(systemName: "xmark")
                         .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(AuthPalette.white)
+                        .foregroundStyle(AppPalette.white)
                         .frame(width: 28, height: 28)
-                        .background(AuthPalette.backgroundPrimary.opacity(0.6))
+                        .background(AppPalette.backgroundPrimary.opacity(0.6))
                         .clipShape(Circle())
-                        .overlay(Circle().stroke(AuthPalette.fieldBorder, lineWidth: 1))
+                        .overlay(Circle().stroke(AppPalette.fieldBorder, lineWidth: 1))
                 }
                 .buttonStyle(.plain)
             }
@@ -200,7 +200,7 @@ struct SaveAlarmSheet: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text("NOMBRE DE LA ALARMA")
                     .font(.system(size: 12, weight: .semibold, design: .default))
-                    .foregroundStyle(AuthPalette.textSecondary)
+                    .foregroundStyle(AppPalette.textSecondary)
                 TextField("Ingresa el nombre de tu alarma", text: $name)
                     .textInputAutocapitalization(.words)
                     .font(.system(.body, design: .default))
@@ -208,11 +208,11 @@ struct SaveAlarmSheet: View {
                     .padding(.horizontal, 14)
                     .background(
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .stroke(AuthPalette.fieldBorder, lineWidth: 1)
-                            .background(AuthPalette.backgroundSecondary)
+                            .stroke(AppPalette.fieldBorder, lineWidth: 1)
+                            .background(AppPalette.backgroundSecondary)
                             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     )
-                    .foregroundStyle(AuthPalette.white)
+                    .foregroundStyle(AppPalette.white)
             }
             .padding(.horizontal, 16)
 
@@ -225,7 +225,7 @@ struct SaveAlarmSheet: View {
                 .foregroundStyle(Color.black)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .background(AuthPalette.primaryGreen)
+                .background(AppPalette.primaryGreen)
                 .clipShape(Capsule())
             }
             .buttonStyle(.plain)
@@ -233,7 +233,7 @@ struct SaveAlarmSheet: View {
             .padding(.bottom, 12)
         }
         .padding(.top, 4)
-        .background(AuthPalette.backgroundSecondary)
+        .background(AppPalette.backgroundSecondary)
         .ignoresSafeArea(edges: .bottom)
     }
 }
@@ -251,7 +251,7 @@ struct SaveSuccessModal: View {
             VStack(spacing: 16) {
                 ZStack {
                     Circle()
-                        .fill(AuthPalette.primaryGreen)
+                        .fill(AppPalette.primaryGreen)
                         .frame(width: 56, height: 56)
                     Image(systemName: "checkmark")
                         .font(.system(size: 20, weight: .bold))
@@ -259,10 +259,10 @@ struct SaveSuccessModal: View {
                 }
                 Text(title)
                     .font(.system(size: 20, weight: .bold, design: .default))
-                    .foregroundStyle(AuthPalette.white)
+                    .foregroundStyle(AppPalette.white)
                 Text(message)
                     .font(.system(size: 15, weight: .regular, design: .default))
-                    .foregroundStyle(AuthPalette.textSecondary)
+                    .foregroundStyle(AppPalette.textSecondary)
                     .multilineTextAlignment(.center)
                     .lineLimit(nil)
                     .padding(.horizontal, 12)
@@ -273,16 +273,16 @@ struct SaveSuccessModal: View {
                         .foregroundStyle(Color.black)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
-                        .background(AuthPalette.primaryGreen)
+                        .background(AppPalette.primaryGreen)
                         .clipShape(Capsule())
                 }
                 .buttonStyle(.plain)
             }
             .padding(20)
-            .background(AuthPalette.backgroundSecondary)
+            .background(AppPalette.backgroundSecondary)
             .overlay(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(AuthPalette.fieldBorder, lineWidth: 1)
+                    .stroke(AppPalette.fieldBorder, lineWidth: 1)
             )
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .padding(.horizontal, 28)
@@ -298,5 +298,5 @@ struct SaveSuccessModal: View {
         SaveAlarmSheet(name: .constant("Press Banca"), isSaving: false, onClose: {}, onSave: {})
     }
     .padding()
-    .background(AuthPalette.backgroundPrimary)
+    .background(AppPalette.backgroundPrimary)
 }

@@ -1,16 +1,23 @@
 import SwiftUI
 
-// MARK: - Shared Palette
-struct AuthPalette {
+// MARK: - Global Palette
+struct AppPalette {
+    // Backgrounds
     static let backgroundPrimary = Color(hex: "#071416")
     static let backgroundSecondary = Color(hex: "#0D2226")
+
+    // Brand colors
     static let primaryGreen = Color(hex: "#BDF000")
+    static let restBlue = Color(hex: "#0A84FF")   // descanso (dinámico)
+    static let restTrack = Color(hex: "#174471")  // aro de fondo (descanso)
+
+    // Neutrals
     static let white = Color.white
     static let textSecondary = Color(hex: "#97998D")
     static let fieldBorder = Color.white.opacity(0.12)
 }
 
-// MARK: - Hex Color Helper
+// MARK: - Hex Color Helper (global único)
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -31,17 +38,17 @@ extension Color {
     }
 }
 
-// MARK: - Auth Back Button
-struct AuthBackButton: View {
+// MARK: - Shared UI Components
+struct AppBackButton: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         Button(action: { dismiss() }) {
             Image(systemName: "chevron.left")
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(AuthPalette.white)
+                .foregroundStyle(AppPalette.white)
                 .frame(width: 36, height: 36)
-                .background(AuthPalette.backgroundSecondary)
+                .background(AppPalette.backgroundSecondary)
                 .clipShape(Circle())
         }
         .buttonStyle(.plain)
@@ -49,8 +56,7 @@ struct AuthBackButton: View {
     }
 }
 
-// MARK: - Primary Auth Button
-struct PrimaryAuthButton: View {
+struct PrimaryButton: View {
     let title: String
     var action: () -> Void = {}
 
@@ -61,15 +67,14 @@ struct PrimaryAuthButton: View {
                 .foregroundStyle(Color.black)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(AuthPalette.primaryGreen)
+                .background(AppPalette.primaryGreen)
                 .clipShape(Capsule())
         }
         .buttonStyle(.plain)
     }
 }
 
-// MARK: - Social Auth Button
-struct SocialAuthButton: View {
+struct SocialButton: View {
     enum Provider { case apple, google }
     let provider: Provider
     let title: String
@@ -92,36 +97,34 @@ struct SocialAuthButton: View {
                     .opacity(1.0)
                 Text(title)
                     .font(.system(.subheadline, design: .default, weight: .semibold))
-                    .foregroundStyle(AuthPalette.white)
+                    .foregroundStyle(AppPalette.white)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
             .background(
                 Capsule()
-                    .stroke(AuthPalette.fieldBorder, lineWidth: 1)
-                    .background(AuthPalette.backgroundSecondary.opacity(0))
+                    .stroke(AppPalette.fieldBorder, lineWidth: 1)
+                    .background(AppPalette.backgroundSecondary.opacity(0))
             )
         }
         .buttonStyle(.plain)
     }
 }
 
-// MARK: - Auth Divider
-struct AuthDivider: View {
+struct DividerLabel: View {
     let text: String
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
-            Rectangle().fill(AuthPalette.fieldBorder).frame(height: 1)
+            Rectangle().fill(AppPalette.fieldBorder).frame(height: 1)
             Text(text)
                 .font(.system(.footnote, design: .default))
-                .foregroundStyle(AuthPalette.textSecondary)
-            Rectangle().fill(AuthPalette.fieldBorder).frame(height: 1)
+                .foregroundStyle(AppPalette.textSecondary)
+            Rectangle().fill(AppPalette.fieldBorder).frame(height: 1)
         }
     }
 }
 
-// MARK: - Auth Text Field
-struct AuthTextField: View {
+struct LabeledTextField: View {
     let label: String
     let placeholder: String
     @Binding var text: String
@@ -130,8 +133,8 @@ struct AuthTextField: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
                 .font(.system(.caption, design: .default, weight: .semibold))
-                .foregroundStyle(AuthPalette.textSecondary)
-            TextField("", text: $text, prompt: Text(placeholder).foregroundColor(AuthPalette.textSecondary.opacity(0.5)))
+                .foregroundStyle(AppPalette.textSecondary)
+            TextField("", text: $text, prompt: Text(placeholder).foregroundColor(AppPalette.textSecondary.opacity(0.5)))
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
                 .keyboardType(.emailAddress)
@@ -140,17 +143,16 @@ struct AuthTextField: View {
                 .padding(.horizontal, 14)
                 .background(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(AuthPalette.fieldBorder, lineWidth: 1)
-                        .background(AuthPalette.backgroundSecondary)
+                        .stroke(AppPalette.fieldBorder, lineWidth: 1)
+                        .background(AppPalette.backgroundSecondary)
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 )
-                .foregroundStyle(AuthPalette.white)
+                .foregroundStyle(AppPalette.white)
         }
     }
 }
 
-// MARK: - Auth Secure Field (with optional eye icon toggle)
-struct AuthSecureField: View {
+struct LabeledSecureField: View {
     let label: String
     let placeholder: String
     @Binding var text: String
@@ -161,24 +163,24 @@ struct AuthSecureField: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(label)
                 .font(.system(.caption, design: .default, weight: .semibold))
-                .foregroundStyle(AuthPalette.textSecondary)
+                .foregroundStyle(AppPalette.textSecondary)
 
             HStack(spacing: 8) {
                 Group {
                     if isSecure {
-                        SecureField("", text: $text, prompt: Text(placeholder).foregroundColor(AuthPalette.textSecondary.opacity(0.5)))
+                        SecureField("", text: $text, prompt: Text(placeholder).foregroundColor(AppPalette.textSecondary.opacity(0.5)))
                     } else {
-                        TextField("", text: $text, prompt: Text(placeholder).foregroundColor(AuthPalette.textSecondary.opacity(0.5)))
+                        TextField("", text: $text, prompt: Text(placeholder).foregroundColor(AppPalette.textSecondary.opacity(0.5)))
                     }
                 }
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled(true)
                 .font(.system(.body, design: .default))
-                .foregroundStyle(AuthPalette.white)
+                .foregroundStyle(AppPalette.white)
 
                 Button(action: { isSecure.toggle() }) {
                     Image(systemName: isSecure ? "eye.slash" : "eye")
-                        .foregroundStyle(AuthPalette.textSecondary)
+                        .foregroundStyle(AppPalette.textSecondary)
                 }
                 .buttonStyle(.plain)
             }
@@ -186,26 +188,10 @@ struct AuthSecureField: View {
             .padding(.horizontal, 14)
             .background(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(AuthPalette.fieldBorder, lineWidth: 1)
-                    .background(AuthPalette.backgroundSecondary)
+                    .stroke(AppPalette.fieldBorder, lineWidth: 1)
+                    .background(AppPalette.backgroundSecondary)
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             )
         }
-    }
-}
-
-#Preview("Auth Components") {
-    ScrollView {
-        VStack(spacing: 16) {
-            AuthBackButton()
-            PrimaryAuthButton(title: "Continuar") {}
-            SocialAuthButton(provider: .apple, title: "Continuar con Apple") {}
-            SocialAuthButton(provider: .google, title: "Continuar con Google") {}
-            AuthDivider(text: "o continuar con")
-            AuthTextField(label: "CORREO ELECTRÓNICO", placeholder: "example@gmail.com", text: .constant(""))
-            AuthSecureField(label: "CONTRASEÑA", placeholder: "••••••••", text: .constant(""))
-        }
-        .padding()
-        .background(AuthPalette.backgroundPrimary)
     }
 }

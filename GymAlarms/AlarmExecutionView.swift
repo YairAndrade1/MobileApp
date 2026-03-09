@@ -3,46 +3,6 @@
 
 import SwiftUI
 
-// MARK: - Color Helpers
-private extension Color {
-    init(hex: String, alpha: Double = 1.0) {
-        var hexSanitized = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hexSanitized).scanHexInt64(&int)
-        let r, g, b: UInt64
-        switch hexSanitized.count {
-        case 3: // RGB (12-bit)
-            (r, g, b) = ((int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (r, g, b) = (int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (r, g, b) = (1, 1, 0)
-        }
-        self.init(.sRGB, red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255, opacity: alpha)
-    }
-}
-
-// MARK: - Design Palette
-private enum AlarmPalette {
-    static let white = Color(hex: "FFFFFF")
-    static let white30 = Color(hex: "FFFFFF", alpha: 0.30)
-    static let white45 = Color(hex: "FFFFFF", alpha: 0.45)
-    static let white75 = Color(hex: "FFFFFF", alpha: 0.75)
-    static let white28 = Color(hex: "FFFFFF", alpha: 0.28)
-    static let white12 = Color(hex: "FFFFFF", alpha: 0.12)
-    static let white10 = Color(hex: "FFFFFF", alpha: 0.10)
-    static let white9  = Color(hex: "FFFFFF", alpha: 0.09)
-    static let white7  = Color(hex: "FFFFFF", alpha: 0.07)
-    static let white6  = Color(hex: "FFFFFF", alpha: 0.06)
-
-    static let background = Color(hex: "071416")
-    static let primaryGreen = Color(hex: "BDFF00")
-    static let restBlue = Color(hex: "0A84FF")
-
-    static let workTrack = Color(hex: "4A6303")
-    static let restTrack = Color(hex: "174471")
-}
-
 // MARK: - Domain
 private enum Phase {
     case work
@@ -69,6 +29,13 @@ struct AlarmExecutionView: View {
     // Timer simulation
     @State private var timer: Timer?
 
+    // Navigation to summary
+    @State private var goToSummary: Bool = false
+
+    // Accumulators for summary
+    @State private var accumulatedWork: TimeInterval = 0
+    @State private var accumulatedRest: TimeInterval = 0
+
     // Layout metrics
     @ScaledMetric(relativeTo: .largeTitle) private var ringSize: CGFloat = 280
     @ScaledMetric private var ringLineWidth: CGFloat = 18
@@ -81,10 +48,10 @@ struct AlarmExecutionView: View {
 
     var body: some View {
         ZStack {
-            AlarmPalette.background.ignoresSafeArea()
+            AppPalette.backgroundPrimary.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Header
+                // Header sin botón custom; se usará el botón nativo del sistema
                 ExecutionHeaderView(currentSet: currentSet, totalSets: totalSets)
                     .padding(.top, Layout.headerTopPadding)
                     .padding(.horizontal, Layout.horizontalPadding)
@@ -93,7 +60,7 @@ struct AlarmExecutionView: View {
                 // Title by phase
                 Text(phase == .work ? "Tiempo de Trabajo" : "Tiempo de Descanso")
                     .font(.system(.largeTitle, design: .default, weight: .bold))
-                    .foregroundStyle(phase == .work ? AlarmPalette.primaryGreen : AlarmPalette.restBlue)
+                    .foregroundStyle(phase == .work ? AppPalette.primaryGreen : AppPalette.restBlue)
                     .padding(.bottom, 10)
 
                 // Sets indicator
@@ -108,8 +75,8 @@ struct AlarmExecutionView: View {
                     size: ringSize,
                     lineWidth: ringLineWidth,
                     progress: progress,
-                    trackColor: phase == .work ? AlarmPalette.workTrack : AlarmPalette.restTrack,
-                    progressColor: phase == .work ? AlarmPalette.primaryGreen : AlarmPalette.restBlue,
+                    trackColor: phase == .work ? AppPalette.primaryGreen.opacity(0.22) : AppPalette.restTrack,
+                    progressColor: phase == .work ? AppPalette.primaryGreen : AppPalette.restBlue,
                     timeText: timeFormatted(remaining),
                     labelText: phase == .work ? "TRABAJO" : "DESCANSO"
                 )
@@ -119,7 +86,7 @@ struct AlarmExecutionView: View {
 
                 // Divider subtle
                 Rectangle()
-                    .fill(AlarmPalette.white12)
+                    .fill(AppPalette.white.opacity(0.12))
                     .frame(height: 1)
                     .opacity(0.6)
                     .padding(.horizontal, Layout.horizontalPadding)
@@ -127,7 +94,7 @@ struct AlarmExecutionView: View {
                 // Controls
                 ExecutionControlsView(
                     isPaused: isPaused,
-                    primaryColor: phase == .work ? AlarmPalette.primaryGreen : AlarmPalette.restBlue,
+                    primaryColor: phase == .work ? AppPalette.primaryGreen : AppPalette.restBlue,
                     onBack15: { remaining = min(totalPhaseDuration, remaining + 15) },
                     onTogglePlayPause: togglePause,
                     onForward15OrNext: { adjustTime(by: 15) },
@@ -142,6 +109,17 @@ struct AlarmExecutionView: View {
         .onDisappear { invalidateTimer() }
         .animation(.easeInOut(duration: 0.25), value: phase)
         .animation(.easeInOut(duration: 0.25), value: currentSet)
+        // Aseguramos que el botón nativo esté disponible
+        .navigationBarBackButtonHidden(false)
+        .navigationDestination(isPresented: $goToSummary) {
+            AlarmSummaryView(
+                totalTime: timeFormatted(accumulatedWork + accumulatedRest),
+                workTime: timeFormatted(accumulatedWork),
+                restTime: timeFormatted(accumulatedRest),
+                setCount: totalSets,
+                subtitleText: "\(totalSets) series completadas"
+            )
+        }
     }
 
     private var progress: Double {
@@ -172,7 +150,11 @@ struct AlarmExecutionView: View {
         if remaining > 0 {
             remaining -= 1
         } else {
-            // Transition
+            if phase == .work {
+                accumulatedWork += workDuration
+            } else {
+                accumulatedRest += restDuration
+            }
             advancePhase()
         }
     }
@@ -185,9 +167,9 @@ struct AlarmExecutionView: View {
             if currentSet < totalSets {
                 startPhase(.work, set: currentSet + 1)
             } else {
-                // End reached: simple stop
                 isPaused = true
                 invalidateTimer()
+                goToSummary = true
             }
         }
     }
@@ -201,9 +183,13 @@ struct AlarmExecutionView: View {
         if delta < 0 {
             remaining = max(0, remaining + delta)
         } else {
-            // If adding beyond phase, jump to next phase for a simple UX
             if remaining - delta <= 0 {
                 remaining = 0
+                if phase == .work {
+                    accumulatedWork += totalPhaseDuration
+                } else {
+                    accumulatedRest += totalPhaseDuration
+                }
                 advancePhase()
             } else {
                 remaining -= delta
@@ -231,24 +217,20 @@ private struct ExecutionHeaderView: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            Text("Alarma")
-                .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                .foregroundStyle(AlarmPalette.white75)
-
             Spacer()
 
             HStack(spacing: 8) {
                 Text("Serie \(currentSet) / \(totalSets)")
                     .font(.system(.footnote, design: .rounded, weight: .semibold))
-                    .foregroundStyle(AlarmPalette.white75)
+                    .foregroundStyle(AppPalette.white.opacity(0.75))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .background(
                         Capsule()
-                            .fill(AlarmPalette.white9)
+                            .fill(AppPalette.white.opacity(0.09))
                             .overlay(
                                 Capsule()
-                                    .stroke(AlarmPalette.white12, lineWidth: 1)
+                                    .stroke(AppPalette.white.opacity(0.12), lineWidth: 1)
                             )
                     )
             }
@@ -274,7 +256,7 @@ private struct SetProgressIndicator: View {
         HStack(spacing: Metrics.spacing) {
             ForEach(1...total, id: \.self) { index in
                 Capsule()
-                    .fill(index == current ? AlarmPalette.white : AlarmPalette.white10)
+                    .fill(index == current ? AppPalette.white : AppPalette.white.opacity(0.10))
                     .frame(width: index == current ? Metrics.widthActive : Metrics.widthInactive,
                            height: index == current ? Metrics.heightActive : Metrics.heightInactive)
             }
@@ -310,12 +292,12 @@ private struct ProgressRingView: View {
             VStack(spacing: 6) {
                 Text(timeText)
                     .font(.system(size: size * 0.18, weight: .bold, design: .rounded))
-                    .foregroundStyle(AlarmPalette.white)
+                    .foregroundStyle(AppPalette.white)
                     .monospacedDigit()
                 Text(labelText)
                     .font(.system(.footnote, design: .rounded, weight: .semibold))
                     .tracking(1.2)
-                    .foregroundStyle(AlarmPalette.white45)
+                    .foregroundStyle(AppPalette.white.opacity(0.45))
             }
         }
         .accessibilityElement(children: .combine)
@@ -373,7 +355,7 @@ private struct CircleButton: View {
         Button(action: action) {
             Image(systemName: iconName)
                 .font(.system(size: iconSize, weight: .semibold))
-                .foregroundStyle(style == .primary ? Color.black : AlarmPalette.white75)
+                .foregroundStyle(style == .primary ? Color.black : AppPalette.white.opacity(0.75))
                 .frame(width: size, height: size)
                 .background(
                     Group {
@@ -381,8 +363,8 @@ private struct CircleButton: View {
                             Circle().fill(color)
                         } else {
                             Circle()
-                                .fill(AlarmPalette.white6)
-                                .overlay(Circle().stroke(AlarmPalette.white12, lineWidth: 1))
+                                .fill(AppPalette.white.opacity(0.06))
+                                .overlay(Circle().stroke(AppPalette.white.opacity(0.12), lineWidth: 1))
                         }
                     }
                 )
@@ -396,7 +378,5 @@ private struct CircleButton: View {
 #Preview("AlarmExecutionView") {
     NavigationStack {
         AlarmExecutionView()
-            .toolbar(.hidden)
     }
 }
-

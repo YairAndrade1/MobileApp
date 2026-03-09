@@ -4,7 +4,7 @@
 import SwiftUI
 
 struct AppleSignInIntroView: View {
-    private let bg = AuthPalette.backgroundPrimary
+    private let bg = AppPalette.backgroundPrimary
 
     @State private var goToScanning: Bool = false
 
@@ -25,14 +25,14 @@ struct AppleSignInIntroView: View {
                         .kerning(-0.5)
                     Text("en IntervalApp")
                         .font(.system(size: 14))
-                        .foregroundStyle(AuthPalette.textSecondary)
+                        .foregroundStyle(AppPalette.textSecondary)
                 }
 
                 // Name field (static)
                 VStack(alignment: .leading, spacing: 0) {
                     Text("NOMBRE")
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(AuthPalette.textSecondary)
+                        .foregroundStyle(AppPalette.textSecondary)
                         .padding(.bottom, 2)
                     Text("Miguel Angel")
                         .font(.system(size: 17))
@@ -55,7 +55,7 @@ struct AppleSignInIntroView: View {
                     HStack {
                         Text("CORREO ELECTRÓNICO")
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(AuthPalette.textSecondary)
+                            .foregroundStyle(AppPalette.textSecondary)
                         Spacer()
                     }
                     .frame(height: 38)
@@ -81,7 +81,7 @@ struct AppleSignInIntroView: View {
                                     .foregroundStyle(.white)
                                 Text("miguelangelvergaracastro@icloud.com")
                                     .font(.system(size: 13))
-                                    .foregroundStyle(AuthPalette.textSecondary)
+                                    .foregroundStyle(AppPalette.textSecondary)
                             }
                             Spacer()
                         }
@@ -102,7 +102,7 @@ struct AppleSignInIntroView: View {
                                     .foregroundStyle(.white)
                                 Text("Se creará un correo anónimo de reenvío")
                                     .font(.system(size: 13, weight: .medium))
-                                    .foregroundStyle(AuthPalette.textSecondary)
+                                    .foregroundStyle(AppPalette.textSecondary)
                             }
                             Spacer()
                         }
@@ -123,7 +123,7 @@ struct AppleSignInIntroView: View {
                 // Disclaimer
                 Text("Apple solo compartirá tu información con IntervalApp para completar la configuración.")
                     .font(.system(size: 12))
-                    .foregroundStyle(AuthPalette.textSecondary)
+                    .foregroundStyle(AppPalette.textSecondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 24)
 

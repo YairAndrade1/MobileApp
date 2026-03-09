@@ -12,6 +12,9 @@ struct AlarmView: View {
     @State private var isSaving: Bool = false
     @State private var showSuccess: Bool = false
 
+    // Navigation
+    @State private var goToExecution: Bool = false
+
     var totalSeconds: Int {
         let perSet = workSeconds + restSeconds
         return max(0, sets) * perSet
@@ -20,7 +23,7 @@ struct AlarmView: View {
     var body: some View {
         ZStack {
 
-            AuthPalette.backgroundPrimary.ignoresSafeArea()
+            AppPalette.backgroundPrimary.ignoresSafeArea()
 
             VStack(spacing: 0) {
                 // Content
@@ -31,22 +34,22 @@ struct AlarmView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Alarma")
                                     .font(.system(.largeTitle, design: .default, weight: .bold))
-                                    .foregroundStyle(AuthPalette.white)
+                                    .foregroundStyle(AppPalette.white)
                                 Text("Configura tu entrenamiento")
                                     .font(.system(.subheadline, design: .default))
-                                    .foregroundStyle(AuthPalette.textSecondary)
+                                    .foregroundStyle(AppPalette.textSecondary)
                             }
                             Spacer()
                             // Bookmark button
-                            Button(action: { withAnimation(.spring(response: 0.35, dampingFraction: 0.9)) { showSaveSheet = true } }) {
-                                Image(systemName: "bookmark")
+                            Button(action: { showSaveSheet = true }) {
+                                Image("tabSaved")
                                     .font(.system(size: 16, weight: .semibold))
-                                    .foregroundStyle(AuthPalette.white)
+                                    .foregroundStyle(AppPalette.white)
                                     .frame(width: 36, height: 36)
-                                    .background(AuthPalette.backgroundSecondary)
+                                    .background(AppPalette.backgroundSecondary)
                                     .clipShape(Circle())
                                     .overlay(
-                                        Circle().stroke(AuthPalette.fieldBorder, lineWidth: 1)
+                                        Circle().stroke(AppPalette.fieldBorder, lineWidth: 1)
                                     )
                             }
                             .buttonStyle(.plain)
@@ -87,7 +90,7 @@ struct AlarmView: View {
                         )
 
                         // Primary CTA
-                        Button(action: {}) {
+                        Button(action: { goToExecution = true }) {
                             HStack(spacing: 10) {
                                 Image(systemName: "play.fill")
                                     .font(.system(size: 14, weight: .bold))
@@ -97,7 +100,7 @@ struct AlarmView: View {
                             .foregroundStyle(Color.black)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
-                            .background(AuthPalette.primaryGreen)
+                            .background(AppPalette.primaryGreen)
                             .clipShape(Capsule())
                         }
                         .buttonStyle(.plain)
@@ -117,11 +120,9 @@ struct AlarmView: View {
                     title: "¡Alarma Guardada!",
                     message: "\(alarmName.isEmpty ? "Press Banca" : alarmName) ha sido guardada en tu lista",
                     onConfirm: {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.9)) {
-                            showSuccess = false
-                            showSaveSheet = false
-                            alarmName = ""
-                        }
+                        showSuccess = false
+                        showSaveSheet = false
+                        alarmName = ""
                     }
                 )
                 .zIndex(3)
@@ -144,7 +145,12 @@ struct AlarmView: View {
             )
             .presentationDetents([.fraction(0.38)])
             .presentationDragIndicator(.visible)
-            .background(AuthPalette.backgroundSecondary)
+            .background(AppPalette.backgroundSecondary)
+        }
+        .navigationDestination(isPresented: $goToExecution) {
+            // Importante: no ocultar la toolbar aquí para que AlarmExecutionView
+            // pueda mostrar su botón de regreso.
+            AlarmExecutionView()
         }
     }
 

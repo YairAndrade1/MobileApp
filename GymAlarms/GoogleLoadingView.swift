@@ -9,7 +9,7 @@ struct GoogleLoadingView: View {
 
     var body: some View {
         ZStack {
-            AuthPalette.backgroundPrimary.ignoresSafeArea()
+            AppPalette.backgroundPrimary.ignoresSafeArea()
 
             VStack(spacing: 24) {
                 // Google badge
@@ -30,10 +30,10 @@ struct GoogleLoadingView: View {
                 VStack(spacing: 6) {
                     Text("Iniciando sesión…")
                         .font(.system(size: 17, weight: .medium))
-                        .foregroundStyle(AuthPalette.white)
+                        .foregroundStyle(AppPalette.white)
                     Text(email)
                         .font(.system(size: 14))
-                        .foregroundStyle(AuthPalette.textSecondary)
+                        .foregroundStyle(AppPalette.textSecondary)
                 }
 
                 // Loading dots (static mock)
