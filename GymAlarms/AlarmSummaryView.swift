@@ -140,7 +140,7 @@ struct AlarmSummaryView: View {
             }
         }
         .sheet(isPresented: $showSaveSheet) {
-            SaveAlarmSheet(name: $alarmName, isSaving: $isSaving, isPresented: $showSaveSheet, onSave: performSave)
+            SaveAlarmSheet(name: $alarmName, isSaving: isSaving, onClose: { showSaveSheet = false }, onSave: performSave)
                 .presentationDetents([.fraction(0.38)])
                 .presentationDragIndicator(.visible)
                 .background(SummaryPalette.background)
