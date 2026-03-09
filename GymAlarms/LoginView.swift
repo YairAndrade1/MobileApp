@@ -6,6 +6,7 @@ struct LoginView: View {
     @State private var goToForgot: Bool = false
     @State private var goToGoogle: Bool = false
     @State private var goToApple: Bool = false
+    @State private var goToHome: Bool = false
 
     var body: some View {
         ZStack {
@@ -49,11 +50,17 @@ struct LoginView: View {
                         }
                     }
 
+                    // Hidden NavigationLink to AlarmView
+                    NavigationLink(destination: AlarmView(), isActive: $goToHome) {
+                        EmptyView()
+                    }
+                    .hidden()
+
                     // Primary CTA
-                    PrimaryAuthButton(title: "Iniciar Sesión") {}
+                    PrimaryAuthButton(title: "Iniciar Sesión") { goToHome = true }
 
                     // Secondary action demo
-                    Button(action: {}) {
+                    Button(action: { goToHome = true }) {
                         Text("→ Continuar como invitado (demo)")
                             .font(.system(.footnote, design: .rounded))
                             .foregroundStyle(AuthPalette.textSecondary)
