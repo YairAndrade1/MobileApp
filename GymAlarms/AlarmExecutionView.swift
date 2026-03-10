@@ -51,22 +51,21 @@ struct AlarmExecutionView: View {
             AppPalette.backgroundPrimary.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Header sin botón custom; se usará el botón nativo del sistema
                 ExecutionHeaderView(currentSet: currentSet, totalSets: totalSets)
                     .padding(.top, Layout.headerTopPadding)
                     .padding(.horizontal, Layout.horizontalPadding)
                     .padding(.bottom, Layout.headerBottomSpacing)
+                
+                // Sets indicator
+                SetProgressIndicator(total: totalSets, current: currentSet)
+                    .padding(.horizontal, Layout.horizontalPadding)
+                    .padding(.bottom, 8)
 
                 // Title by phase
                 Text(phase == .work ? "Tiempo de Trabajo" : "Tiempo de Descanso")
                     .font(.system(.largeTitle, design: .default, weight: .bold))
                     .foregroundStyle(phase == .work ? AppPalette.primaryGreen : AppPalette.restBlue)
                     .padding(.bottom, 10)
-
-                // Sets indicator
-                SetProgressIndicator(total: totalSets, current: currentSet)
-                    .padding(.horizontal, Layout.horizontalPadding)
-                    .padding(.bottom, 8)
 
                 Spacer(minLength: 12)
 

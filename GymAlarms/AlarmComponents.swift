@@ -173,68 +173,71 @@ struct SaveAlarmSheet: View {
     var onSave: () -> Void
 
     var body: some View {
-        VStack(spacing: 16) {
-            // Header
-            HStack(alignment: .center) {
-                Text("Guardar Alarma")
-                    .font(.system(.headline, design: .default, weight: .semibold))
-                    .foregroundStyle(AppPalette.white)
-                Spacer()
-                Button(action: onClose) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 12, weight: .bold))
+        // Non-bouncy content that adapts; no custom background so the presenter controls it.
+        Group {
+            // Use a VStack directly; if content might overflow on very small screens, wrap in ScrollView with disabled bounce.
+            VStack(spacing: 16) {
+                // Header
+                HStack(alignment: .center) {
+                    Text("Guardar Alarma")
+                        .font(.system(.headline, design: .default, weight: .semibold))
                         .foregroundStyle(AppPalette.white)
-                        .frame(width: 28, height: 28)
-                        .background(AppPalette.backgroundPrimary.opacity(0.6))
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(AppPalette.fieldBorder, lineWidth: 1))
+                    Spacer()
+                    Button(action: onClose) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundStyle(AppPalette.white)
+                            .frame(width: 28, height: 28)
+                            .background(AppPalette.backgroundPrimary.opacity(0.6))
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(AppPalette.fieldBorder, lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Cerrar")
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 8)
+
+                // Text field
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("NOMBRE DE LA ALARMA")
+                        .font(.system(size: 12, weight: .semibold, design: .default))
+                        .foregroundStyle(AppPalette.textSecondary)
+                    TextField("Ingresa el nombre de tu alarma", text: $name)
+                        .textInputAutocapitalization(.words)
+                        .font(.system(.body, design: .default))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 14)
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .stroke(AppPalette.fieldBorder, lineWidth: 1)
+                                .background(AppPalette.backgroundSecondary)
+                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        )
+                        .foregroundStyle(AppPalette.white)
+                }
+                .padding(.horizontal, 16)
+
+                // Primary action
+                Button(action: onSave) {
+                    HStack(spacing: 8) {
+                        if isSaving { ProgressView().tint(.black) }
+                        Text(isSaving ? "Guardando..." : "Guardar")
+                            .font(.system(size: 17, weight: .semibold, design: .default))
+                    }
+                    .foregroundStyle(Color.black)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(AppPalette.primaryGreen)
+                    .clipShape(Capsule())
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Cerrar")
+                .padding(.horizontal, 16)
+                .padding(.bottom, 12)
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 4)
-
-            // Text field
-            VStack(alignment: .leading, spacing: 8) {
-                Text("NOMBRE DE LA ALARMA")
-                    .font(.system(size: 12, weight: .semibold, design: .default))
-                    .foregroundStyle(AppPalette.textSecondary)
-
-                TextField("", text: $name, prompt: Text("Ingresa el nombre de tu alarma").foregroundStyle(AppPalette.textSecondary.opacity(0.5)))
-                    .textInputAutocapitalization(.words)
-                    .font(.system(.body, design: .default))
-                    .padding(.vertical, 14)
-                    .padding(.horizontal, 14)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .stroke(AppPalette.fieldBorder, lineWidth: 1)
-                            .background(AppPalette.backgroundSecondary)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                    )
-                    .foregroundStyle(AppPalette.white)
-            }
-            .padding(.horizontal, 16)
-
-            // Primary action
-            Button(action: onSave) {
-                HStack(spacing: 8) {
-                    if isSaving { ProgressView().tint(.black) }
-                    Text(isSaving ? "Guardando..." : "Guardar")
-                        .font(.system(size: 17, weight: .semibold, design: .default))
-                }
-                .foregroundStyle(Color.black)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(AppPalette.primaryGreen)
-                .clipShape(Capsule())
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 16)
             .padding(.bottom, 8)
         }
-        .frame(maxWidth: .infinity, alignment: .top) // ensure full width usage
     }
 }
 
@@ -249,14 +252,10 @@ struct SaveSuccessModal: View {
             Color.black.opacity(0.45).ignoresSafeArea()
 
             VStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(AppPalette.primaryGreen)
-                        .frame(width: 56, height: 56)
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(Color.black)
-                }
+                // Replaced system icon with asset "confirmation icon"
+                Image("confirmationIcon")
+                    .frame(width: 56, height: 56)
+
                 Text(title)
                     .font(.system(size: 20, weight: .bold, design: .default))
                     .foregroundStyle(AppPalette.white)
