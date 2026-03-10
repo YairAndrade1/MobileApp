@@ -21,9 +21,7 @@ struct GooglePermissionsView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
                         .fill(AppPalette.primaryGreen)
-                    Image(systemName: "checkmark.seal")
-                        .foregroundStyle(bg)
-                        .font(.system(size: 26, weight: .bold))
+                    Image("icon2")
                 }
                 .frame(width: 60, height: 60)
 
@@ -32,9 +30,9 @@ struct GooglePermissionsView: View {
                     Spacer()
                     ZStack {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(Color(hex: "#4285F4"))
+                            .fill(AppPalette.googleBlue)
                         Image(systemName: "globe")
-                            .foregroundStyle(.white)
+                            .foregroundStyle(AppPalette.white)
                             .font(.system(size: 16, weight: .bold))
                     }
                     .frame(width: 28, height: 28)
@@ -48,7 +46,7 @@ struct GooglePermissionsView: View {
 
                 // Heading
                 VStack(spacing: 0) {
-                    Text("IntervalApp quiere acceder")
+                    Text("GymAlarm quiere acceder")
                         .font(.system(size: 22, weight: .bold))
                         .foregroundStyle(AppPalette.white)
                         .kerning(-0.5)
@@ -59,25 +57,25 @@ struct GooglePermissionsView: View {
 
                 // Permissions card
                 VStack(spacing: 0) {
-                    permissionRow(iconColor: Color(hex: "#4285F4"), title: "Tu nombre y foto de perfil", subtitle: "Para personalizar tu experiencia", iconName: "person.fill")
-                    Divider().background(Color.white.opacity(0.05)).padding(.horizontal, 16)
-                    permissionRow(iconColor: Color(hex: "#4285F4"), title: "Correo electrónico", subtitle: "Para identificar tu cuenta", iconName: "envelope.fill")
-                    Divider().background(Color.white.opacity(0.05)).padding(.horizontal, 16)
-                    permissionRow(iconColor: Color(hex: "#30D158"), title: "Ningún dato adicional", subtitle: "No accedemos a Gmail, Drive ni calendario", iconName: "lock.fill")
+                    permissionRow(iconColor: AppPalette.googleBlue, title: "Tu nombre y foto de perfil", subtitle: "Para personalizar tu experiencia", iconName: "person.fill")
+                    Divider().background(AppPalette.divider05).padding(.horizontal, 16)
+                    permissionRow(iconColor: AppPalette.googleBlue, title: "Correo electrónico", subtitle: "Para identificar tu cuenta", iconName: "envelope.fill")
+                    Divider().background(AppPalette.divider05).padding(.horizontal, 16)
+                    permissionRow(iconColor: AppPalette.partnerGreen, title: "Ningún dato adicional", subtitle: "No accedemos a Gmail, Drive ni calendario", iconName: "lock.fill")
                 }
                 .padding(.vertical, 14)
                 .background(
                     RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(Color.white.opacity(0.04))
+                        .fill(AppPalette.cardFill04)
                         .overlay(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(Color.white.opacity(0.08), lineWidth: 1.1)
+                                .stroke(AppPalette.stroke08, lineWidth: 1.1)
                         )
                 )
                 .padding(.horizontal, 24)
 
                 // Disclaimer
-                Text("Al continuar, permites que IntervalApp acceda a la información anterior asociada a tu cuenta de Google.")
+                Text("Al continuar, permites que GymAlarm acceda a la información anterior asociada a tu \(Text("Cuenta de Google.").foregroundStyle(.blue))")
                     .font(.system(size: 12))
                     .foregroundStyle(AppPalette.textSecondary)
                     .multilineTextAlignment(.center)
@@ -88,10 +86,10 @@ struct GooglePermissionsView: View {
                     Button(action: { goToLoading = true }) {
                         Text("Permitir")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(AppPalette.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 52)
-                            .background(Color(hex: "#4285F4"))
+                            .background(AppPalette.googleBlue)
                             .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
@@ -99,12 +97,12 @@ struct GooglePermissionsView: View {
                     Button(action: { dismiss() }) {
                         Text("Cancelar")
                             .font(.system(size: 15, weight: .medium))
-                            .foregroundStyle(Color.white.opacity(0.55))
+                            .foregroundStyle(AppPalette.dimWhite55)
                             .frame(maxWidth: .infinity)
                             .frame(height: 48)
                             .overlay(
                                 Capsule()
-                                    .stroke(Color.white.opacity(0.15), lineWidth: 1.1)
+                                    .stroke(AppPalette.stroke10, lineWidth: 1.1)
                             )
                             .clipShape(Capsule())
                     }
@@ -144,7 +142,7 @@ struct GooglePermissionsView: View {
             }
             Spacer()
             Image(systemName: "chevron.right")
-                .foregroundStyle(Color.white.opacity(0.5))
+                .foregroundStyle(AppPalette.white.opacity(0.5))
         }
         .padding(.horizontal, 16)
         .frame(height: 76)

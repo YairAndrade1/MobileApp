@@ -42,8 +42,8 @@ struct LoginView: View {
                                 ForgotPasswordView()
                             } label: {
                                 Text("¿Olvidaste tu contraseña?")
-                                        .font(.system(.footnote, design: .default, weight: .semibold))
-                                    .foregroundStyle(Color.blue)
+                                    .font(.system(.footnote, design: .default, weight: .semibold))
+                                    .foregroundStyle(AppPalette.primaryGreen) // antes: Color.blue
                             }
                             .buttonStyle(.plain)
                         }

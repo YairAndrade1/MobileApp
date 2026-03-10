@@ -104,7 +104,18 @@ struct AlarmSummaryView: View {
             )
             .presentationDetents([.fraction(0.38)])
             .presentationDragIndicator(.visible)
-            .background(AppPalette.backgroundSecondary)
+            .presentationBackground(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        AppPalette.sheetBackground.opacity(0.85),
+                        AppPalette.sheetBackground
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .interactiveDismissDisabled(false)
+            //.presentationCornerRadius(24)
         }
         .overlay(alignment: .center) {
             if showSaveSuccess {

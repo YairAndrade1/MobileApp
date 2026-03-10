@@ -16,6 +16,7 @@ struct ForgotPasswordView: View {
     @State private var email: String = ""
     @State private var navigateToInbox: Bool = false
     @State private var goToLogin: Bool = false
+    @FocusState private var emailFocused: Bool
 
     private enum InputState {
         case neutral, valid, invalid
@@ -71,7 +72,7 @@ struct ForgotPasswordView: View {
                         HStack {
                             Image(systemName: "envelope")
                                 .font(.system(size: 32, weight: .regular))
-                                .foregroundStyle(Color.blue)
+                                .foregroundStyle(AppPalette.restBlue)
                             Spacer()
                         }
                         .padding(.horizontal, 24)
@@ -89,7 +90,7 @@ struct ForgotPasswordView: View {
                         }
                         .padding(.horizontal, 24)
 
-                        // Email field
+                        // Email field (mismo patrón que LabeledTextField, con placeholder custom)
                         VStack(alignment: .leading, spacing: 6) {
                             Text("Correo electrónico".uppercased())
                                 .font(.system(size: 12, weight: .medium, design: .default))
@@ -117,13 +118,20 @@ struct ForgotPasswordView: View {
                                 }
                                 .frame(width: 36, height: 36)
 
-                                // TextField
-                                TextField("", text: $email, prompt: Text("example@gmail.com").foregroundColor(AppPalette.textSecondary.opacity(0.5)))
-                                    .textInputAutocapitalization(.never)
-                                    .keyboardType(.emailAddress)
-                                    .textContentType(.emailAddress)
-                                    .disableAutocorrection(true)
-                                    .foregroundStyle(white)
+                                ZStack(alignment: .leading) {
+                                    if email.isEmpty && !emailFocused {
+                                        Text("example@gmail.com")
+                                            .foregroundStyle(AppPalette.textSecondary.opacity(0.5))
+                                    }
+                                    TextField("", text: $email)
+                                        .focused($emailFocused)
+                                        .textInputAutocapitalization(.never)
+                                        .keyboardType(.emailAddress)
+                                        .textContentType(.emailAddress)
+                                        .disableAutocorrection(true)
+                                        .foregroundStyle(AppPalette.white) // texto del usuario en blanco
+                                        .tint(AppPalette.primaryGreen) // acento verde, no azul
+                                }
                             }
                             .padding(.horizontal, 12)
                             .frame(height: 50)
@@ -145,58 +153,36 @@ struct ForgotPasswordView: View {
                                 .padding(.horizontal, 24)
                         }
 
-                        Spacer(minLength: 0)
-
-                        // Expiration info banner
-                        HStack(spacing: 8) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(Color.white.opacity(0.03))
-                                Image(systemName: "info.circle")
-                                    .font(.system(size: 14, weight: .regular))
-                                    .foregroundStyle(secondaryGray)
-                            }
-                            .frame(width: 28, height: 28)
-
-                            Text("El enlace expira en 15 minutos por seguridad")
-                                .font(.system(size: 12, weight: .regular, design: .default))
-                                .foregroundStyle(secondaryGray)
-                                .kerning(-0.1)
-
-                            Spacer()
-                        }
-                        .padding(.horizontal, 24)
-
-                        // Primary button
-                        Button(action: {
-                            navigateToInbox = true
-                        }) {
-                            Text("Enviar enlace")
-                                .font(.system(.headline, design: .default, weight: .bold))
-                                .foregroundStyle(Color.black)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 54)
-                                .background(primaryGreen)
-                                .clipShape(Capsule())
-                        }
-                        .buttonStyle(.plain)
-                        .padding(.horizontal, 24)
-                        .padding(.top, 8)
-
-                        // Secondary button (text style)
-                        Button(action: { dismiss() }) {
-                            Text("Volver al inicio de sesión")
-                                .font(.system(.subheadline, design: .default))
-                                .foregroundStyle(Color.blue)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 38)
-                        }
-                        .buttonStyle(.plain)
-                        .padding(.horizontal, 24)
-                        .padding(.bottom, 16)
+                        Spacer(minLength: 12)
                     }
                     .padding(.top, 8)
                 }
+
+                VStack(spacing: 16) {
+                    Button(action: {
+                        navigateToInbox = true
+                    }) {
+                        Text("Enviar enlace")
+                            .font(.system(.headline, design: .default, weight: .bold))
+                            .foregroundStyle(Color.black)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 54)
+                            .background(primaryGreen)
+                            .clipShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+
+                    Button(action: { dismiss() }) {
+                        Text("Volver al inicio de sesión")
+                            .font(.system(.subheadline, design: .default))
+                            .foregroundStyle(AppPalette.restBlue)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 38)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 32)
             }
         }
         .navigationDestination(isPresented: $navigateToInbox) {

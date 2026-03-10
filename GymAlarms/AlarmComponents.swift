@@ -174,11 +174,7 @@ struct SaveAlarmSheet: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            // Handle
-            Capsule()
-                .fill(AppPalette.fieldBorder)
-                .frame(width: 40, height: 4)
-                .padding(.top, 8)
+            // Header
             HStack(alignment: .center) {
                 Text("Guardar Alarma")
                     .font(.system(.headline, design: .default, weight: .semibold))
@@ -194,18 +190,23 @@ struct SaveAlarmSheet: View {
                         .overlay(Circle().stroke(AppPalette.fieldBorder, lineWidth: 1))
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Cerrar")
             }
             .padding(.horizontal, 16)
+            .padding(.top, 4)
 
-            VStack(alignment: .leading, spacing: 10) {
+            // Text field
+            VStack(alignment: .leading, spacing: 8) {
                 Text("NOMBRE DE LA ALARMA")
                     .font(.system(size: 12, weight: .semibold, design: .default))
                     .foregroundStyle(AppPalette.textSecondary)
-                TextField("Ingresa el nombre de tu alarma", text: $name)
+
+                TextField("", text: $name, prompt: Text("Ingresa el nombre de tu alarma").foregroundStyle(AppPalette.textSecondary.opacity(0.5)))
                     .textInputAutocapitalization(.words)
                     .font(.system(.body, design: .default))
                     .padding(.vertical, 14)
                     .padding(.horizontal, 14)
+                    .frame(maxWidth: .infinity)
                     .background(
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                             .stroke(AppPalette.fieldBorder, lineWidth: 1)
@@ -216,6 +217,7 @@ struct SaveAlarmSheet: View {
             }
             .padding(.horizontal, 16)
 
+            // Primary action
             Button(action: onSave) {
                 HStack(spacing: 8) {
                     if isSaving { ProgressView().tint(.black) }
@@ -230,11 +232,9 @@ struct SaveAlarmSheet: View {
             }
             .buttonStyle(.plain)
             .padding(.horizontal, 16)
-            .padding(.bottom, 12)
+            .padding(.bottom, 8)
         }
-        .padding(.top, 4)
-        .background(AppPalette.backgroundSecondary)
-        .ignoresSafeArea(edges: .bottom)
+        .frame(maxWidth: .infinity, alignment: .top) // ensure full width usage
     }
 }
 

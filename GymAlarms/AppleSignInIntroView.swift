@@ -7,12 +7,21 @@ struct AppleSignInIntroView: View {
     private let bg = AppPalette.backgroundPrimary
 
     @State private var goToScanning: Bool = false
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ZStack {
             bg.ignoresSafeArea()
 
             VStack(spacing: 20) {
+                // Top bar with back (consistent with the rest of the app)
+                HStack {
+                    AppBackButton()
+                    Spacer()
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 12)
+
                 // Apple logo + titles
                 VStack(spacing: 6) {
                     Image(systemName: "applelogo")
@@ -23,7 +32,7 @@ struct AppleSignInIntroView: View {
                         .font(.system(size: 24, weight: .bold))
                         .foregroundStyle(.white)
                         .kerning(-0.5)
-                    Text("en IntervalApp")
+                    Text("en GymAlarm")
                         .font(.system(size: 14))
                         .foregroundStyle(AppPalette.textSecondary)
                 }
@@ -121,11 +130,14 @@ struct AppleSignInIntroView: View {
                 .padding(.horizontal, 24)
 
                 // Disclaimer
-                Text("Apple solo compartirá tu información con IntervalApp para completar la configuración.")
-                    .font(.system(size: 12))
-                    .foregroundStyle(AppPalette.textSecondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 24)
+                Text(
+                    "Apple solo compartirá tu información con IntervalApp la primera vez que inicie sesión. Consulta las \(Text("políticas de privacidad").foregroundStyle(.blue)) para más información."
+                )
+                .font(.system(size: 12))
+                .foregroundStyle(AppPalette.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 24)
+    
 
                 // Continue button
                 Button(action: { goToScanning = true }) {

@@ -12,6 +12,7 @@ struct GymAlarmsApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .tint(AppPalette.primaryGreen) // fija el acento global y elimina el azul por defecto
         }
     }
 }

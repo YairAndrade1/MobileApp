@@ -89,7 +89,7 @@ struct AlarmView: View {
                             total: formatTime(totalSeconds)
                         )
 
-                        // Primary CTA
+                        // Primary Button
                         Button(action: { goToExecution = true }) {
                             HStack(spacing: 10) {
                                 Image(systemName: "play.fill")
@@ -145,7 +145,19 @@ struct AlarmView: View {
             )
             .presentationDetents([.fraction(0.38)])
             .presentationDragIndicator(.visible)
-            .background(AppPalette.backgroundSecondary)
+            .presentationBackground(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        AppPalette.sheetBackground.opacity(0.85), // slightly lighter at top
+                        AppPalette.sheetBackground
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .interactiveDismissDisabled(false)
+            // Optional on iOS 17+: uncomment if you want sharper corners
+            //.presentationCornerRadius(24)
         }
         .navigationDestination(isPresented: $goToExecution) {
             // Importante: no ocultar la toolbar aquí para que AlarmExecutionView

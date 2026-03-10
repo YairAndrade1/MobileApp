@@ -15,10 +15,10 @@ struct GoogleLoadingView: View {
                 // Google badge
                 ZStack {
                     RoundedRectangle(cornerRadius: 36, style: .continuous)
-                        .fill(Color(hex: "#4285F4").opacity(0.08))
+                        .fill(AppPalette.googleBlue(opacity: 0.08))
                         .overlay(
                             RoundedRectangle(cornerRadius: 36, style: .continuous)
-                                .stroke(Color(hex: "#4285F4").opacity(0.15), lineWidth: 1.1)
+                                .stroke(AppPalette.googleBlue(opacity: 0.15), lineWidth: 1.1)
                         )
                     Image("googlelogo")
                         .resizable()
@@ -40,7 +40,7 @@ struct GoogleLoadingView: View {
                 HStack(spacing: 8) {
                     ForEach(0..<3) { i in
                         RoundedRectangle(cornerRadius: 3)
-                            .fill(Color(hex: "#4285F4").opacity(0.95 - Double(i) * 0.1))
+                            .fill(AppPalette.googleBlue(opacity: 0.95 - Double(i) * 0.1))
                             .frame(width: 6, height: 6)
                     }
                 }

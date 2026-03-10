@@ -137,13 +137,13 @@ struct CheckInboxView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         .padding(.horizontal, 24)
 
-                        Spacer(minLength: 0)
+                        Spacer(minLength: 24) // more breathing room before bottom buttons
                     }
                     .padding(.top, 8)
                 }
 
                 // Bottom buttons pinned
-                VStack(spacing: 12) {
+                VStack(spacing: 16) {
                     Button(action: { goToLogin = true }) {
                         Text("Volver al inicio de sesión")
                             .font(.system(.headline, design: .default, weight: .bold))
@@ -176,7 +176,7 @@ struct CheckInboxView: View {
                     .buttonStyle(.plain)
                 }
                 .padding(.horizontal, 24)
-                .padding(.bottom, 24)
+                .padding(.bottom, 32) // increased from 24
             }
         }
         .navigationBarHidden(true)

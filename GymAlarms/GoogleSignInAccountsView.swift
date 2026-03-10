@@ -11,8 +11,8 @@ struct GoogleSignInAccountsView: View {
     @State private var selectedEmail: String = ""
 
     private let accounts: [(initials: String, name: String, email: String, color: Color)] = [
-        ("CR", "Miguel Angel", "miguelangelvergaracastro@gmail.com", Color(hex: "#4285F4")),
-        ("CW", "Andres Moncada", "andresmoncadaroldan@gmail.com", Color(hex: "#34A853"))
+        ("CR", "Miguel Angel", "miguelangelvergaracastro@gmail.com", AppPalette.googleBlue),
+        ("CW", "Andres Moncada", "andresmoncadaroldan@gmail.com", AppPalette.partnerGreen)
     ]
 
     var body: some View {
@@ -20,19 +20,9 @@ struct GoogleSignInAccountsView: View {
             bg.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Top bar: Atrás
-                HStack(spacing: 4) {
-                    Button(action: { dismiss() }) {
-                        HStack(spacing: 4) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(Color.blue)
-                            Text("Atrás")
-                                .font(.system(size: 17, weight: .medium))
-                                .foregroundStyle(Color.blue)
-                        }
-                    }
-                    .buttonStyle(.plain)
+                // Top bar: consistent back button
+                HStack {
+                    AppBackButton()
                     Spacer()
                 }
                 .padding(.horizontal, 16)
@@ -44,20 +34,20 @@ struct GoogleSignInAccountsView: View {
                         HStack(spacing: 8) {
                             Image(systemName: "lock.fill")
                                 .font(.system(size: 12))
-                                .foregroundStyle(Color.white.opacity(0.4))
+                                .foregroundStyle(AppPalette.white.opacity(0.4))
                             Text("accounts.google.com")
                                 .font(.system(size: 12))
-                                .foregroundStyle(Color.white.opacity(0.4))
+                                .foregroundStyle(AppPalette.white.opacity(0.4))
                             Spacer()
                         }
                         .padding(.horizontal, 12)
                         .frame(height: 36)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(Color.white.opacity(0.06))
+                                .fill(AppPalette.white.opacity(0.06))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                        .stroke(Color.white.opacity(0.10), lineWidth: 1.1)
+                                        .stroke(AppPalette.white.opacity(0.10), lineWidth: 1.1)
                                 )
                         )
                         .padding(.horizontal, 24)
@@ -75,7 +65,7 @@ struct GoogleSignInAccountsView: View {
                             Text("Iniciar sesión")
                                 .font(.system(size: 24))
                                 .foregroundStyle(AppPalette.white)
-                            Text("Elige una cuenta para continuar en IntervalApp")
+                            Text("Elige una cuenta para continuar en GymAlarm")
                                 .font(.system(size: 15))
                                 .foregroundStyle(AppPalette.textSecondary)
                                 .multilineTextAlignment(.center)
@@ -92,7 +82,7 @@ struct GoogleSignInAccountsView: View {
                                                 .fill(account.color)
                                             Text(account.initials)
                                                 .font(.system(size: 15, weight: .bold))
-                                                .foregroundStyle(.white)
+                                                .foregroundStyle(AppPalette.white)
                                         }
                                         .frame(width: 42, height: 42)
 
@@ -106,16 +96,16 @@ struct GoogleSignInAccountsView: View {
                                         }
                                         Spacer()
                                         Image(systemName: "chevron.right")
-                                            .foregroundStyle(Color.white.opacity(0.25))
+                                            .foregroundStyle(AppPalette.white.opacity(0.25))
                                     }
                                     .padding(.horizontal, 16)
                                     .frame(height: 74)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                            .fill(Color.white.opacity(0.04))
+                                            .fill(AppPalette.white.opacity(0.04))
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                    .stroke(Color.white.opacity(0.07), lineWidth: 1.1)
+                                                    .stroke(AppPalette.white.opacity(0.07), lineWidth: 1.1)
                                             )
                                     )
                                 }
@@ -126,22 +116,22 @@ struct GoogleSignInAccountsView: View {
                             Button(action: {}) {
                                 HStack(spacing: 12) {
                                     ZStack {
-                                        Circle().fill(Color.white.opacity(0.06))
+                                        Circle().fill(AppPalette.white.opacity(0.06))
                                         Image(systemName: "plus")
-                                            .foregroundStyle(Color.white.opacity(0.5))
+                                            .foregroundStyle(AppPalette.white.opacity(0.5))
                                     }
                                     .frame(width: 42, height: 42)
 
                                     Text("Usar otra cuenta")
                                         .font(.system(size: 15, weight: .medium))
-                                        .foregroundStyle(Color(hex: "#4285F4"))
+                                        .foregroundStyle(AppPalette.googleBlue)
                                     Spacer()
                                 }
                                 .padding(.horizontal, 16)
                                 .frame(height: 68)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .stroke(Color.white.opacity(0.07), lineWidth: 1.1)
+                                        .stroke(AppPalette.white.opacity(0.07), lineWidth: 1.1)
                                 )
                             }
                             .buttonStyle(.plain)
