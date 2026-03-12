@@ -158,6 +158,7 @@ struct AppleSignInIntroView: View {
         .navigationDestination(isPresented: $goToScanning) {
             AppleFaceIDScanningView()
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
